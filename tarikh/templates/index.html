@@ -1,0 +1,63 @@
+{% extends "_base.html" %}
+{% comment %}
+@author: aby
+{% endcomment %}
+
+{% load static i18n %}
+{% block doctitle %}
+{{ block.super }} - sejarah
+{% endblock %}
+
+{% block content %}
+	{%if request.GET.q %}
+	<div class="panel panel-default search-info">
+		<div class="panel-body">
+		<h5>{% trans 'Search Result'%}:</h5><p><i>{{request.GET.q}}</i></p>
+		</div>
+	</div>
+	{%endif%}
+	<div class="topic-list">
+  {% for t in object_list %}
+  	<div class="topic-item clearfix" >
+  	<a href="{% url 'topic' t.slug %}">
+      		<div class="topic-thumbnail" >
+      		{% if t.thumbnail_url %}
+      			<img {% if settings.DEBUG %} src="{% static 'img/logo.png' %}" {% else %} src="{{t.thumbnail_url}}" {% endif %} class="topic-img" >
+      		{% else %}
+      			<img src="{% static 'img/logo.png' %}" class="topic-img" >
+          {% endif %}
+      		</div>
+      		<div class="topic-text">
+					<h3>{{t.title}} </h3>
+          <p>{{t.short_description}} </p>
+          </div>
+    </a>
+  	</div>
+  	<div class="divider"></div>
+  {% endfor %}
+  </div>
+	{% if is_paginated %}
+				<!--
+				why we use pagination?
+				we can use scroll event to load next page and put it below 
+				but consider on about user experience and network / page load
+				-->
+				<div class="row">
+					<div class="col-md-12">
+						<ul class="pagination centerhz"> 
+						  <li class="{% if page_obj.number == 1 %}disabled{%endif%}"><a href="{% if page_obj.number == 1 %}#{%else%}?page=1{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}{% endif %}"><i class="fa fa-chevron-left"></i><i class="fa fa-chevron-left"></i></a></li>
+						  <li class="{% if not page_obj.has_previous %}disabled{%endif%}"><a href="{% if not page_obj.has_previous %}#{%else%}?page={{page_obj.previous_page_number}}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}{% endif %}"><i class="fa fa-chevron-left"></i></a></li>
+							{% for pg in paginator.page_range %}
+								{%if pg|add:"3" > page_obj.number and page_obj.number > pg|add:"-3" or 3 >= page_obj.number and 5 >= pg or  pg > paginator.num_pages|add:"-5" and page_obj.number|add:"2" > paginator.num_pages %}
+						  	<li class="{% if page_obj.number == pg %}active{%endif%}"><a {% if page_obj.number == pg %}{%else%}href="?page={{pg}}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}"{%endif%}>{{pg}}</a></li>
+						  	{%endif%}
+							{% endfor %}
+						  <li class="{% if not page_obj.has_next %}disabled{%endif%}"><a href="{% if not page_obj.has_next %}#{%else%}?page={{page_obj.next_page_number}}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}{% endif %}"><i class="fa fa-chevron-right"></i></a></li>
+						  <li class="{% if page_obj.number == paginator.num_pages %}disabled{%endif%}"><a href="{% if page_obj.number == paginator.count %}#{%else%}?page={{paginator.num_pages}}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}{% endif %}"><i class="fa fa-chevron-right"></i><i class="fa fa-chevron-right"></i></a></li>
+						</ul>
+					</div>
+				</div>
+	{% endif %}
+				
+{% endblock %}
+                    

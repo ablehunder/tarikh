@@ -1,0 +1,14 @@
+{% extends "_base.html" %}
+{% comment %}
+@author: aby
+{% endcomment %}
+
+{% block doc-title %}{{page_name}} | {{block.super}}{% endblock %}
+
+{% block navbar-class %}navbar-fixed-top{% endblock %}
+
+{% block main-container %}
+{% include page_name|add:".html" %}
+{% endblock %}
+
+
