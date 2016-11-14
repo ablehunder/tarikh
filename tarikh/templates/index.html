@@ -3,9 +3,9 @@
 @author: aby
 {% endcomment %}
 
-{% load static i18n %}
-{% block doctitle %}
-{{ block.super }} - sejarah
+{% load static i18n highlight %}
+{% block doc-title %}
+{%if request.GET.q %}{% trans 'Search' %}: {{request.GET.q}} | {% endif %}{{ block.super }} 
 {% endblock %}
 
 {% block content %}
@@ -13,16 +13,35 @@
 	<div class="panel panel-default search-info">
 		<div class="panel-body">
 		<h5>{% trans 'Search Result'%}:</h5><p><i>{{request.GET.q}}</i></p>
+		<!--{% if suggestion %}<p>{% trans 'Suggestion'%}: <i>{{suggestion}}</i></p>{% endif %}-->
 		</div>
 	</div>
 	{%endif%}
 	<div class="topic-list">
   {% for t in object_list %}
   	<div class="topic-item clearfix" >
+  	{% if t.object %} {# hay stack result #}
+  		{% with t.object as o %}
+  	<a href="{% url 'topic' o.slug %}">
+      		<div class="topic-thumbnail" >
+      		{% if o.thumbnail_url %}
+      			<img {% if settings.DEBUG_FRONT %} src="{% static 'img/logo.png' %}" {% else %} src="{{o.thumbnail_url}}" {% endif %} class="topic-img" >
+      		{% else %}
+      			<img src="{% static 'img/logo.png' %}" class="topic-img" >
+          {% endif %}
+      		</div>
+      		<div class="topic-text">
+					<h3>{% highlight o.title with query %}</h3>
+					<sup class="pull-right">{{t.score|floatformat:2}} &nbsp;<!--{% widthratio t.score 1 100 %}%--></sup>
+          <p>{% highlight t.get_stored_fields.text with query %}</p>
+          </div>
+    </a>  		
+  		{% endwith %}
+  	{% else %}
   	<a href="{% url 'topic' t.slug %}">
       		<div class="topic-thumbnail" >
       		{% if t.thumbnail_url %}
-      			<img {% if settings.DEBUG %} src="{% static 'img/logo.png' %}" {% else %} src="{{t.thumbnail_url}}" {% endif %} class="topic-img" >
+      			<img {% if settings.DEBUG_FRONT %} src="{% static 'img/logo.png' %}" {% else %} src="{{t.thumbnail_url}}" {% endif %} class="topic-img" >
       		{% else %}
       			<img src="{% static 'img/logo.png' %}" class="topic-img" >
           {% endif %}
@@ -32,16 +51,14 @@
           <p>{{t.short_description}} </p>
           </div>
     </a>
+    {% endif %}
   	</div>
   	<div class="divider"></div>
+	{% empty %}
+		<p>No results found.</p>
   {% endfor %}
   </div>
 	{% if is_paginated %}
-				<!--
-				why we use pagination?
-				we can use scroll event to load next page and put it below 
-				but consider on about user experience and network / page load
-				-->
 				<div class="row">
 					<div class="col-md-12">
 						<ul class="pagination centerhz"> 

@@ -5,12 +5,14 @@
 from tarikh import settings
 from django.views.generic import TemplateView
 from django.views.generic.detail import DetailView
-from tarikh.models import Topic
+from tarikh.models import Topic, Event
 from django.views.generic.list import ListView
 import json
 from django.core import serializers
 from django.http.response import HttpResponse
 from django.db.models import Q
+from haystack import views
+from datetime import datetime
 
 class BaseView(TemplateView):
     
@@ -33,15 +35,15 @@ class HomeView(ListView):
     lang = settings.LANGUAGE_CODE    
     
     def query_using_db(self):
-        qs = None
         qfilter = None
         if self.query:
-            qs = self.query.split();
-            for q in qs:
+            for q in self.query.split():
                 qr = Q(title__icontains=q) | Q(event__name__icontains=q) | Q(description__icontains=q) | Q(event__description__icontains=q)
                 qfilter = (qfilter | qr) if qfilter else qr
-        qfilter = qfilter & Q(visible=True) if qfilter else Q(visible=True) 
-        return Topic.objects.filter(qfilter).distinct()  
+        qfilter = qfilter & Q(published=True) if qfilter else Q(published=True)
+        # do some 'random' order so the site seems like has new article 
+        orders = ('-modify_date', '-published_date', '-creation_date')								 
+        return Topic.objects.filter(qfilter).distinct().order_by(orders[(datetime.now().day) % 3])  
     
     def get_queryset(self):
         return self.query_using_db()
@@ -56,7 +58,7 @@ class HomeView(ListView):
         except (TypeError, ValueError):
             pass
         
-        return ListView.dispatch(self,request, *args, **kwargs)
+        return ListView.dispatch(self, request, *args, **kwargs)
 
     def render_to_response(self, context, **response_kwargs):
         
@@ -67,6 +69,22 @@ class HomeView(ListView):
         
         return ListView.render_to_response(self, new_context, **response_kwargs)
 
+class SearchView(views.SearchView):
+    template = 'index.html'
+    #results_per_page = 7 #see HAYSTACK_SEARCH_RESULTS_PER_PAGE
+
+    def get_context(self):
+        context = views.SearchView.get_context(self);
+
+        extra_context = {
+            'object_list': context['page'].object_list,
+            'page_obj': context['page'],
+        }
+        
+        context.update(extra_context)
+
+        return context
+    
 class PageView(BaseView):
     
     def dispatch(self, request, *args, **kwargs):
@@ -86,28 +104,66 @@ class PageView(BaseView):
         
         return BaseView.render_to_response(self, new_context, **response_kwargs)
     
-class TopicView(DetailView):
-    model = Topic
+class TopicView(ListView):
+    model = Event
     template_name = "topic_detail.html"
-    
-    event = None
+    paginate_by = 5
     mode = None
+        
+    def get_queryset(self):
+        return Event.objects.filter(
+                topic__slug = self.kwargs['slug'],
+                visible = True
+            ).order_by(self.ordering if self.ordering else 'year_start')	
+
+    def dispatch(self, request, *args, **kwargs):
+        try:
+            self.mode = request.GET.get('m')
+            self.ordering = request.GET.get('o')
+        except (TypeError, ValueError):
+            pass
+        if self.mode == 'a': # return ajax/json
+            self.paginate_by = 0
+        
+        return ListView.dispatch(self, request, *args, **kwargs)
+    
+    def render_to_response(self, context, **response_kwargs):
+        obj = Topic.objects.get(slug=self.kwargs['slug'])
+        context ['topic'] = obj
+        context ['meta_description'] = obj.title
+        
+        if self.mode == 'a': # return ajax/json
+            data = serializers.serialize('json', context['object_list'], 
+                fields=( "name", "group", "calendar_type",
+                    "year_start", "month_start", "day_start",
+                    "year_end", "month_end", "day_end",
+                ))
+            return HttpResponse(data, content_type='application/json')
+        
+        return ListView.render_to_response(self, context, **response_kwargs)
+
+class EventView(DetailView):
+    model = Event
+    template_name = "event_detail.html"
+    mode = None
+    
+    def get_queryset(self):
+        return Event.objects.filter(pk=self.kwargs['pk'], topic__slug = self.kwargs['slug'])				
     
     def dispatch(self, request, *args, **kwargs):
         try:
             self.mode = request.GET.get('m')
-            self.event = int(request.GET.get('e'))
         except (TypeError, ValueError):
             pass
         
-        return DetailView.dispatch(self, request, *args, **kwargs)
+        return ListView.dispatch(self, request, *args, **kwargs)
     
     def render_to_response(self, context, **response_kwargs):
         obj = context['object']        
-        context ['meta_description'] = obj.title
-        
+        context ['meta_description'] = obj.topic.title
+
         if self.mode == 'a': # return ajax/json
-            data = serializers.serialize('json', obj.event_set.all())
+            data = serializers.serialize('json', [obj])
             return HttpResponse(data, content_type='application/json')
-        
+
         return DetailView.render_to_response(self, context, **response_kwargs)

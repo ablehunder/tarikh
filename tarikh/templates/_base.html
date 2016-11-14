@@ -69,7 +69,7 @@
 		<meta property="og:type" content="{% block og-type %}website{% endblock %}"> 
 		<meta property="og:url" content="{% block og-url %}{{request.build_absolute_uri}}{% endblock %}"> 
 		<meta property="og:title" content="{% block og-title %}{{settings.SITE_NAME}}{% endblock %}"> 
-		<meta property="og:image" content="{% block og-image %}http://{{request.META.HTTP_HOST}}{% static 'img/logo.png' %}{% endblock %}"> 
+		<meta property="og:image" content="{% block og-image %}//{{request.META.HTTP_HOST}}{% static 'img/logo.png' %}{% endblock %}"> 
 		<meta property="og:description" content="{% block og-description %}{{meta_description}}{% endblock %}">
 {% endblock %}
 {% block meta-twitter %}
@@ -78,28 +78,28 @@
 		<meta name="twitter:creator" content="@ablehunder">
 		<meta name="twitter:title" content="{% block tw-title %}{{settings.SITE_NAME}}{% endblock %}">
 		<meta name="twitter:description" content="{% block tw-description %}{{meta_description}}{% endblock %}">
-		<meta name="twitter:image" content="{% block tw-image %}http://{{request.META.HTTP_HOST}}{% static 'img/logo.png' %}{% endblock %}">
+		<meta name="twitter:image" content="{% block tw-image %}//{{request.META.HTTP_HOST}}{% static 'img/logo.png' %}{% endblock %}">
 {% endblock %}
 
 {% block styles %}
 		<meta name="theme-color" content="#000000" />
 		<link rel="apple-touch-icon" href="apple-touch-icon.png">
-{%if settings.DEBUG %}
-		<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}"> 
-		<link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}">
+{%if settings.DEBUG_FRONT %}
+		<link rel="stylesheet" id="bootstrap.min.css" href="{% static 'css/bootstrap.min.css' %}"> 
+		<link rel="stylesheet" id="font-awesome.min.css" href="{% static 'css/font-awesome.min.css' %}">
 {% else %}		
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-{% comment %} <link rel="stylesheet" href="https://use.fontawesome.com/18fab75f56.js"> {% endcomment %}
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+		<link rel="stylesheet" id="bootstrap.min.css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+{% comment %} <link rel="stylesheet" href="//use.fontawesome.com/18fab75f56.js"> {% endcomment %}
+		<link rel="stylesheet" id="font-awesome.min.css" href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 {%endif%}
 {% endblock %}
-		<link rel="stylesheet" href="{% static 'css/tarikh.css' %}">
+		<link rel="stylesheet" id="tarikh.css" href="{% static 'css/tarikh.css' %}">
 {% block head-scripts %}
-{%if settings.DEBUG %}
+{%if settings.DEBUG_FRONT %}
 		<script src="{% static 'js/vendor/modernizr-2.8.3-respond-1.4.2.min.js' %}"></script>
 {% else %}		
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+		<script src="//cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
+		<script src="//cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
 {%endif%}
 {% endblock %}
 	</head>
@@ -110,10 +110,10 @@
     <![endif]-->
 {% block navbar %}
 		<nav class="navbar navbar-default {%block navbar-class%}navbar-static-top{%endblock%}" role="navigation">
-		  <div class="container" style="position:relative">
+		  <div class="container">
 		    <div class="navbar-header">
 		      <a class="navbar-brand" href="/"><img src="{% static 'img/logo.png' %}" class="brand-logo">{{settings.SITE_NAME}}</a>
-		      <form class="search-form pull-right" action="{% url 'home' %}" role="form">            
+		      <form class="search-form pull-right" action="{% url 'haystack_search' %}" role="form">            
 				    <div class="input-group">
 				      <input type="text" name="q" class="form-control" value="{{request.GET.q}}" placeholder="{% trans 'Search' %} ...">
 				      <span class="input-group-btn">
@@ -138,9 +138,11 @@
 		<footer class="{%block footer-class%}{% endblock %}">
 			<nav class="navbar toolbar-bottom">
 			<div class="container">
-				<div class="btn btn-default cd-top ">
-					<i class="fa fa-angle-double-up"></i>
+				<a href="#_top">
+				<div class="btn btn-default cd-top cd-is-visible">
+					<i class="fa fa-chevron-left fa-rotate-90"></i>
 				</div>
+				</a>
 		  	<div class="toolbar-share">
 					<a href="http://www.facebook.com/sharer/sharer.php?u={{request.build_absolute_uri}}" title="Share via Facebook"><i class="fa fa-2x fa-facebook-official"></i></a>
 					<a href="https://twitter.com/intent/tweet?text={% block share-twitter %}{{meta_description}}{% endblock %}&url={{request.build_absolute_uri}}" title="Share via Twitter"><i class="fa fa-2x fa-twitter"></i></a>
@@ -170,16 +172,26 @@
 		    </div>
 		</footer>
 {% endblock %}
+		<i class="hidden fa-tty" id="fa-check"></i>
 {% block body-pre-scripts %}
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-    <script>window.jQuery || document.write('<script src="{% static "js/vendor/jquery-1.11.2.min.js" %}"><\/script>')</script>
-{%if settings.DEBUG %}
+{%if settings.DEBUG_FRONT %}
+    <script src="{% static "js/vendor/jquery-1.11.2.min.js" %}"></script>
     <script src="{% static 'js/vendor/bootstrap.min.js' %}"></script>
     <script src="{% static 'js/vendor/jquery.visible.min.js' %}"></script>
+    <script src="{% static 'js/vendor/jquery.unveil.min.js' %}"></script>
 {% else %}    
-    <script src="{% static 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js' %}"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="{% static "js/vendor/jquery-1.11.2.min.js" %}"><\/script>')</script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="https://gitcdn.xyz/repo/customd/jquery-visible/master/jquery.visible.min.js"></script>
-{% endif %}    
+    <script src="https://gitcdn.xyz/repo/luis-almeida/unveil/master/jquery.unveil.js"></script>
+{% endif %}
+		<!-- fallback -->
+    <script>
+			$.fn.button || document.write('<script src="{% static "js/vendor/bootstrap.min.js" %}"><\/script>');
+    	$.fn.visible  || document.write('<script src="{% static "js/vendor/jquery.visible.min.js" %}"><\/script>');
+    	$.fn.unveil  || document.write('<script src="{% static "js/vendor/jquery.unveil.min.js" %}"><\/script>');
+    </script>
 {% endblock %}
     <script src="{% static 'js/tarikh.main.js' %}"></script>
 {% block body-post-scripts %}

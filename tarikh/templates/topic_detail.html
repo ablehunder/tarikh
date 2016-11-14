@@ -5,44 +5,55 @@
 
 {% load static i18n %}
 {% block doc-title %}
-{{object.title}} | {{ block.super }}
+{{topic.title}} | {{ block.super }}
 {% endblock %}
 
 {% block og-type %}article{% endblock %}
-{% block og-title %}{{object.title}} | {{ block.super }}{% endblock %} 
-{% block og-image %}{% if object.thumbnail_url %}{{object.thumbnail_url}}{% else %}http://{{request.META.HTTP_HOST}}{% static 'img/logo.png' %}{% endif %}{% endblock %} 
-{% block og-description %}{{object.short_description}}{% endblock %}
+{% block og-title %}{{topic.title}} | {{ block.super }}{% endblock %} 
+{% block og-image %}{% if topic.thumbnail_url %}{{topic.thumbnail_url}}{% else %}http://{{request.META.HTTP_HOST}}{% static 'img/logo.png' %}{% endif %}{% endblock %} 
+{% block og-description %}{{topic.short_description}}{% endblock %}
 
-{% block tw-title %}{{object.title}} | {{ block.super }}{% endblock %}
-{% block tw-description %}{{object.short_description}}{% endblock %}
-{% block tw-image %}{% if object.thumbnail_url %}{{object.thumbnail_url}}{% else %}http://{{request.META.HTTP_HOST}}{% static 'img/logo.png' %}{% endif %}{% endblock %} 
+{% block tw-title %}{{topic.title}} | {{ block.super }}{% endblock %}
+{% block tw-description %}{{topic.short_description}}{% endblock %}
+{% block tw-image %}{% if topic.thumbnail_url %}{{topic.thumbnail_url}}{% else %}http://{{request.META.HTTP_HOST}}{% static 'img/logo.png' %}{% endif %}{% endblock %} 
 
 
 {% block styles %}
-	{%if settings.DEBUG%}
-    <link title="timeline-styles" rel="stylesheet" href="{% static 'css/timeline.css' %}">
+	{%if settings.DEBUG_FRONT%}
+    <link rel="stylesheet" id="timeline.css" href="{% static 'css/timeline.css' %}">
 	{%else%}
-    <link title="timeline-styles" rel="stylesheet" href="https://cdn.knightlab.com/libs/timeline3/latest/css/timeline.css">
+    <link rel="stylesheet" id="timeline.css" href="//cdn.knightlab.com/libs/timeline3/latest/css/timeline.css">
 	{%endif%}
 {{ block.super }}
 {% endblock %}
 
 {% block body-pre-scripts %}
 {{ block.super }}
-	{%if settings.DEBUG%}
-      <script src="{% static 'js/vendor/timeline.min.js' %}"></script>
-      <script src="{% static 'js/vendor/jquery.calendars.min.js' %}"></script>
-      <script src="{% static 'js/vendor/jquery.calendars-'%}{{settings.LANGUAGE_CODE|slice:":2" }}.js"></script>
-      <script src="{% static 'js/vendor/jquery.calendars.plus.min.js' %}"></script>
-      <script src="{% static 'js/vendor/jquery.calendars.islamic.min.js' %}"></script>      
+	{%if settings.DEBUG_FRONT%}
+    <script src="{% static 'js/vendor/timeline.min.js' %}"></script>
+    <script src="{% static 'js/vendor/jquery.calendars.min.js' %}"></script>
+    <script src="{% static 'js/vendor/jquery.calendars-'%}{{settings.LANGUAGE_CODE|slice:":2" }}.js"></script>
+    <script src="{% static 'js/vendor/jquery.calendars.plus.min.js' %}"></script>
+    <script src="{% static 'js/vendor/jquery.calendars.islamic.min.js' %}"></script>      
 	{% else %}
-      <script src="https://cdn.knightlab.com/libs/timeline3/latest/js/timeline.js"></script>
-      <script src="https://gitcdn.xyz/repo/kbwood/calendars/master/jquery.calendars.min.js"></script>
-      <script src="https://gitcdn.xyz/repo/kbwood/calendars/master/jquery.calendars-{{settings.LANGUAGE_CODE|slice:":2" }}.js"></script>
-      <script src="https://gitcdn.xyz/repo/kbwood/calendars/master/jquery.calendars.plus.min.js"></script>
-      <script src="https://gitcdn.xyz/repo/kbwood/calendars/master/jquery.calendars.islamic.min.js"></script>
-			<script>window.TL || document.write('<script src="{% static "js/vendor/timeline.min.js" %}"><\/script>')</script>
+    <script src="//cdn.knightlab.com/libs/timeline3/latest/js/timeline.js"></script>
+    <script src="//gitcdn.xyz/repo/kbwood/calendars/master/jquery.calendars.min.js"></script>
+    <script src="//gitcdn.xyz/repo/kbwood/calendars/master/jquery.calendars-{{settings.LANGUAGE_CODE|slice:":2" }}.js"></script>
+    <script src="//gitcdn.xyz/repo/kbwood/calendars/master/jquery.calendars.plus.min.js"></script>
+    <script src="//gitcdn.xyz/repo/kbwood/calendars/master/jquery.calendars.islamic.min.js"></script>
 	{% endif %}
+		<!-- fallback -->
+		<script>
+			window.TL || document.write('<script src="{% static "js/vendor/timeline.min.js" %}"><\/script>');			
+			if (!$.calendars){
+				document.write(''
+					+ '<script src="{% static "js/vendor/jquery.calendars.min.js" %}"><\/script>'
+					+ '<script src="{% static "js/vendor/jquery.calendars-"%}{{settings.LANGUAGE_CODE|slice:":2" }}.js"><\/script>'
+					+ '<script src="{% static "js/vendor/jquery.calendars.plus.min.js" %}"><\/script>'
+					+ '<script src="{% static "js/vendor/jquery.calendars.islamic.min.js" %}"><\/script>'
+					);
+				}
+			</script>
 {% endblock %}
 {% block body-post-scripts %}
       <script src="{% static 'js/tarikh.topic.js' %}"></script>
@@ -52,27 +63,24 @@
 {% block content %}
     <div class="topic-info">
     		<div class="topic-thumbnail" >
-    		{% if object.thumbnail_url %}
-    			<img {% if settings.DEBUG %} src="{% static 'img/logo.png' %}" {% else %} src="{{object.thumbnail_url}}" {% endif %} class="topic-img" >
+    		{% if topic.thumbnail_url %}
+    			<img {% if settings.DEBUG_FRONT %} src="{% static 'img/logo.png' %}" {% else %} src="{{topic.thumbnail_url}}" {% endif %} class="topic-img" >
     		{% else %}
-    		<img src="{% static 'img/logo.png' %}" class="topic_img" >
+    		<img src="{% static 'img/logo.png' %}" class="topic-img" >
         {% endif %}
         </div>
         <div>
         <div class="topic-header-wrap">
-					<h3 class="topic-header">{{object.title}} </h3>
+					<h3 class="topic-header">{{topic.title}} </h3>
 				</div>
-        <div class="topic-short">{{object.short_description}} </div>
-        <div class="topic-scales hidden">{{object.scales}} </div>
+        <div class="topic-short">{{topic.short_description}} </div>
+        <div class="topic-scales hidden">{{topic.scales}} </div>
         </div>
     </div>
 		<div class="pre-toolbar clearfix"></div>
     <div class="navbar toolbar-top">
     <div class="container">        
-    	<div class="btn-group" data-toggle="buttons">
-	    	<!--
-				<button type="submit" class="btn btn-default"><i class="fa fa-mobile fa-lg"></i></button>
-				-->
+    	<div class="btn-group btn-mode-wrap hidden" data-toggle="buttons">
 			  <label class="btn btn-default" data-toggle="tooltip" data-placement="top" title="{% trans 'Desktop/Tablet Mode - Horizontal Timeline' %}">
 			    <input type="radio" name="mode" value="horizontal" autocomplete="off"> <i class="fa fa-desktop fa-lg"></i>
 			  </label>
@@ -80,7 +88,17 @@
 			    <input type="radio" name="mode" value="vertical" autocomplete="off" checked> <i class="fa fa-tablet fa-lg"></i>
 			  </label>
 			</div>
-    	<div class="btn-group" data-toggle="buttons">
+    	<div class="btn-group btn-mode-wrap" data-toggle="buttons">
+			  <a class="btn btn-default {% if not request.GET.o or request.GET.o == 'year_start' %}active{% endif %}" data-toggle="tooltip" data-placement="top" title="{% trans 'Sort Date Ascending' %}"
+					href="?o=year_start{% for key, value in request.GET.items %}{% if key != 'o' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">
+					<i class="fa fa-sort-numeric-asc fa-lg"></i>
+				</a>
+			  <a class="btn btn-default {% if request.GET.o == '-year_start' %}active{% endif %}" data-toggle="tooltip" data-placement="top" title="{% trans 'Sort Date Descending' %}"
+					href="?o=-year_start{% for key, value in request.GET.items %}{% if key != 'o' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">
+					<i class="fa fa-sort-numeric-desc fa-lg"></i>
+				</a>
+			</div>
+    	<div class="btn-group btn-mode-wrap hidden" data-toggle="buttons">
 			  <label class="btn btn-default" data-toggle="tooltip" data-placement="top" title="{% trans 'Sort Date Ascending' %}">
 			    <input type="radio" name="sort" value="asc" autocomplete="off"> <i class="fa fa-sort-numeric-asc fa-lg"></i>
 			  </label>
@@ -88,7 +106,7 @@
 			    <input type="radio" name="sort" value="desc" autocomplete="off" checked> <i class="fa fa-sort-numeric-desc fa-lg"></i>
 			  </label>
 			</div>
-    	<div class="btn-group" data-toggle="buttons">
+    	<div class="btn-group btn-mode-wrap hidden" data-toggle="buttons">
 			  <label class="btn btn-default" data-toggle="tooltip" data-placement="top" title="{% trans 'Hijri' %}">
 			    <input type="radio" name="calendar" value="hijri" autocomplete="off"> <i class="fa fa-moon-o fa-lg"></i>
 			  </label>
@@ -99,45 +117,78 @@
     </div>
 		</div>
 		<div class='timeline-wrap'>
-    <div id='timeline-embed' style="width: 100%; "></div>
+    <div id='timeline-embed'></div>
     </div>
     <div class="topic-info-more">
         <input type="checkbox" class="rm-state" id="topic-rm-wrap" />
         <div class="topic-rm-wrap rm-wrap">
       	<label for="topic-rm-wrap" class="rm-trigger rm-target">
-        	<div class="topic-desc rm-target">{{object.description|safe}} </div>  
-        	<div class="topic-footer">{{object.footnote|safe}} </div>      	
+        	<div class="topic-desc rm-target">{{topic.description|safe}} </div>  
+        	<div class="topic-footer">{{topic.footnote|safe}} </div>      	
 				</label>
         </div>
   			<label for="topic-rm-wrap" class="topic-rm-trigger rm-shade rm-trigger">
-					<span class="rm-textmore"><i class="fa fa-lg fa-angle-down"></i> {%trans 'More'%} <i class="fa fa-lg fa-angle-down"></i></span>
-					<span class="rm-textless"><i class="fa fa-lg fa-angle-up"></i> {%trans 'Less'%} <i class="fa fa-lg fa-angle-up"></i></span>
+					<span class="rm-textmore"><i class="fa fa-lg fa-angle-down"></i> {% trans 'More' %} <i class="fa fa-lg fa-angle-down"></i></span>
+					<span class="rm-textless"><i class="fa fa-lg fa-angle-up"></i> {% trans 'Less' %} <i class="fa fa-lg fa-angle-up"></i></span>
 				</label>
     </div>
+	{% if is_paginated %}
+				<div class="row pagination-wrap">
+					<div class="col-md-12">
+						<ul class="pagination centerhz"> 
+						  <li class="{% if page_obj.number == 1 %}disabled{%endif%}"><a href="{% if page_obj.number == 1 %}#{%else%}?page=1{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}{% endif %}"><i class="fa fa-chevron-left"></i><i class="fa fa-chevron-left"></i></a></li>
+						  <li class="{% if not page_obj.has_previous %}disabled{%endif%}"><a href="{% if not page_obj.has_previous %}#{%else%}?page={{page_obj.previous_page_number}}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}{% endif %}"><i class="fa fa-chevron-left"></i></a></li>
+							{% for pg in paginator.page_range %}
+								{%if pg|add:"3" > page_obj.number and page_obj.number > pg|add:"-3" or 3 >= page_obj.number and 5 >= pg or  pg > paginator.num_pages|add:"-5" and page_obj.number|add:"2" > paginator.num_pages %}
+						  	<li class="{% if page_obj.number == pg %}active{%endif%}"><a {% if page_obj.number == pg %}{%else%}href="?page={{pg}}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}"{%endif%}>{{pg}}</a></li>
+						  	{%endif%}
+							{% endfor %}
+						  <li class="{% if not page_obj.has_next %}disabled{%endif%}"><a href="{% if not page_obj.has_next %}#{%else%}?page={{page_obj.next_page_number}}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}{% endif %}"><i class="fa fa-chevron-right"></i></a></li>
+						  <li class="{% if page_obj.number == paginator.num_pages %}disabled{%endif%}"><a href="{% if page_obj.number == paginator.count %}#{%else%}?page={{paginator.num_pages}}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}{% endif %}"><i class="fa fa-chevron-right"></i><i class="fa fa-chevron-right"></i></a></li>
+						</ul>
+					</div>
+				</div>
+	{% endif %}
     <ol class="timeline">
-	    <li class="event-item hidden" title="{% trans 'Click for detail'%}">
-        <input type="checkbox" class="rm-state" id="event-rm-wrap" />
+    	{% for e in object_list %}
+	    <li class="event-item unveil" title="{% trans 'Click for detail'%}">
+	    	<a class="event-pk" name="/{{e.pk}}"></a>
+        <input type="checkbox" class="rm-state" id="event-rm-wrap-{{e.pk}}" />
         <div class="event-rm-wrap rm-wrap">
-        	<label for="event-rm-wrap" class="rm-trigger rm-target">
-		        <time class="event-start-time">1589</time><time class="event-end-time">1591</time>
-		        <cite class="event-title">The Two Gentlemen of Verona</cite>
-		        <dl class="event-desc">
-		            <dt>First official record</dt><dd>Francis Meres'...</dd>
-		            <dt>First published</dt><dd>First Folio (1623)</dd>
-		            <dt>First recorded performance</dt><dd>adaptation by...</dd>
-		            <dt>Evidence</dt><dd>The play contains...</dd>
+        	<label for="event-rm-wrap-{{e.pk}}" class="rm-trigger rm-target">
+		        <time class="event-start-time">{{e.year_start|default_if_none:''}}
+							{% if e.month_start %}- {{e.month_start|default_if_none:''}}
+							{% if e.day_start %}- {{e.day_start|default_if_none:''}}{% endif %}{% endif %}
+						</time>
+						<time class="event-end-time">{% if e.year_end %} &#x2014; {% endif %}{{e.year_end|default_if_none:''}}
+							{% if e.month_end %}- {{e.month_end|default_if_none:''}}
+							{% if e.day_end %}- {{e.day_end|default_if_none:''}}{% endif %}{% endif %}
+						</time>
+		        <cite class="event-title">{{e.name|default_if_none:''}}</cite>
+		        <dl class="event-desc">{{e.description|default_if_none:''|safe}}
 		        </dl>
-		        <dl class="event-note">aa
+		        <dl class="event-note">{{e.footnote|default_if_none:''|safe}}
+		        </dl>
+		        <dl class="event-related">
+						{% with '- '|add:request.scheme|add:'://'|add:request.META.HTTP_HOST|add:e.related_events|safe as re %}
+						{% with '<br>- '|add:request.scheme|add:'://'|add:request.META.HTTP_HOST|safe as rs %}
+							{{re.splitlines|join:rs|urlize}}
+						{% endwith %}	
+						{% endwith %}
+		        </dl>
+		        <dl>
+							<a href="{{request.build_absolute_uri}}" class="event-link">{{e.pk}}</a>
 		        </dl>
 		      </label>
         </div>
-  			<label for="event-rm-wrap" class="event-rm-trigger rm-shade rm-trigger">
+  			<label for="event-rm-wrap-{{e.pk}}" class="event-rm-trigger rm-shade rm-trigger">
   			<!--
 					<span class="event-rm-textmore rm-textmore"><i class="fa fa-lg fa-angle-down"></i><i class="fa fa-lg fa-angle-down"></i></span>
 					<span class="event-rm-textless rm-textless"><i class="fa fa-lg fa-angle-up"></i><i class="fa fa-lg fa-angle-up"></i></span>
 					-->
 				</label>
 	    </li>
+	    {% endfor %}
 		</ol>
 {% endblock %}
 

@@ -14,7 +14,8 @@ body{
 	padding-top:0px;
 	line-height: calc(1.3em + (1.5 - 1.3) * ((100vw - 21em)/(35 - 21)));
 }
-p, li{
+.highlighted {
+	background-color: #fafa8f;
 }
 .full-content {
 	padding-top:50px;/*navbar*/
@@ -144,6 +145,7 @@ p, li{
 	margin: 0 2px 0 0;
 }
 .cd-top{
+	border-radius:25px;
 	position:absolute;
   visibility: hidden;
 	right:25px; 
@@ -223,13 +225,13 @@ p, li{
 }
 
 .topic-short,
-.topic-footer  {
+.topic-footer, .event-note, .event-related  {
 	color:#888888;
 	font-size:12px;
 	font-weight: normal;
 }
 
-.topic-footer {
+.topic-footer, .event-note, .event-related {
 	border-top: 1px dashed #cecece;
 }
 
@@ -348,12 +350,28 @@ p, li{
   height:100%;
 }
 
+a.event-link{
+	border:none;
+	margin: 0 0;
+	padding: 0 0;
+	height:0px;
+	width:0px;
+	opacity:0;
+}
+
 /* timeline detail */
+#timeline-embed
+{
+	width:100%;
+}
+.tl-timeline {
+	background-color:#fefefe;
+}
 .timeline {
 	padding-top: 10px;
 }
-.timeline li > time + time:before {
-    content: " - ";
+.timeline li  time + time:before {
+    /*content: " \2014 ";*/
 }
 
 .timeline dl,

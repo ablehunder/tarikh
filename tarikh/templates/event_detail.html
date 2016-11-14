@@ -1,0 +1,57 @@
+{% extends "_base.html" %}
+{% comment %}
+@author: aby
+{% endcomment %}
+
+{% load static i18n %}
+{% block doc-title %}
+{{object.name}} - {{object.topic.title}} | {{ block.super }}
+{% endblock %}
+
+{% block og-type %}article{% endblock %}
+{% block og-title %}{{object.topic.title}} | {{ block.super }}{% endblock %} 
+{% block og-image %}{% if object.topic.thumbnail_url %}{{object.topic.thumbnail_url}}{% else %}http://{{request.META.HTTP_HOST}}{% static 'img/logo.png' %}{% endif %}{% endblock %} 
+{% block og-description %}{{object.topic.short_description}}{% endblock %}
+
+{% block tw-title %}{{object.topic.title}} | {{ block.super }}{% endblock %}
+{% block tw-description %}{{object.topic.short_description}}{% endblock %}
+{% block tw-image %}{% if object.topic.thumbnail_url %}{{object.topic.thumbnail_url}}{% else %}http://{{request.META.HTTP_HOST}}{% static 'img/logo.png' %}{% endif %}{% endblock %} 
+
+
+{% block styles %}
+    <meta http-equiv="refresh" content="0;URL='{% url 'topic' object.topic.slug %}#/{{object.pk}}'" />    
+{{ block.super }}
+{% endblock %}
+    
+{% block content %}
+    <div class="topic-info">
+    		<div class="topic-thumbnail" >
+    		{% if object.topic.thumbnail_url %}
+    			<img {% if settings.DEBUG %} src="{% static 'img/logo.png' %}" {% else %} src="{{object.thumbnail_url}}" {% endif %} class="topic-img" >
+    		{% else %}
+    		<img src="{% static 'img/logo.png' %}" class="topic-img" >
+        {% endif %}
+        </div>
+        <div>
+        <div class="topic-header-wrap">
+					<h3 class="topic-header">{{object.topic.title}} </h3>
+				</div>
+        <div class="topic-short">{{object.topic.short_description}} </div>
+        <div class="topic-scales hidden">{{object.topic.scales}} </div>
+        </div>
+    </div>
+    <ol class="timeline">
+	    <li class="event-item">
+        <div class="event-rm-wrap rm-wrap">
+        	<label for="event-rm-wrap" class="rm-trigger rm-target">
+		        <time class="event-start-time">{{object.year_start|default_if_none:''}}-{{object.month_start|default_if_none:''}}-{{object.day_start|default_if_none:''}}</time>
+						<time class="event-end-time">{{object.year_end|default_if_none:''}}-{{object.month_end|default_if_none:''}}-{{object.day_end|default_if_none:''}}</time>
+		        <cite class="event-title">{{object.name|default_if_none:''}}</cite>
+		        <dl class="event-desc">{{object.description|default_if_none:''|safe}}</dl>
+		        <dl class="event-note">{{object.footnote|default_if_none:''|safe}}</dl>
+		      </label>
+        </div>
+	    </li>
+		</ol>
+{% endblock %}
+

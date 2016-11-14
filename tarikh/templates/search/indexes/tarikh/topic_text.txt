@@ -1,0 +1,14 @@
+{{ object.title|default_if_none:"" }}
+{{ object.short_description|default_if_none:"" }}
+{{ object.description|default_if_none:""|striptags }}
+{{ object.footnote|default_if_none:""|striptags }}
+{{ object.tags|default_if_none:"" }}
+
+{% for e in object.event_set.all %}
+{% if e.visible %}
+{{ e.name|default_if_none:"" }}
+{{ e.description|default_if_none:""|striptags }}
+{{ e.footnote|default_if_none:""|striptags }}
+{{ e.tags|default_if_none:"" }}    
+{% endif %}
+{% endfor %}

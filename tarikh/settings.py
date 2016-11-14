@@ -3,6 +3,7 @@
 '''
 
 import os
+from urllib.parse import urlparse
 from django.utils.translation import ugettext_lazy as _
 
 
@@ -39,6 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'haystack',
+    'logentry_admin',
     'tinymce',
     'tarikh',
 ]
@@ -83,9 +86,17 @@ WSGI_APPLICATION = 'tarikh.wsgi.application'
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
 
 DATABASES = {
-    'default': {
+    'dev': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    },    
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'tarikh',
+        'USER': 'tarikhmysql',
+				'PASSWORD': 'tarikhmysql', 
+				'HOST': 'localhost',
+				'PORT': '3306',
     }
 }
 
@@ -132,7 +143,32 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+STATIC_ROOT = os.path.join(PROJECT_ROOT, "site_media", 'static')
 
+
+# Haystack + Elasticsearch
+
+#elasticsearch
+es = urlparse(os.environ.get('SEARCHBOX_URL') or 'http://127.0.0.1:9200/')
+port = es.port or 80
+
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        #'ENGINE': 'haystack.backends.simple_backend.SimpleEngine',
+        'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
+        'URL': es.scheme + '://' + es.hostname + ':' + str(port),
+        'INDEX_NAME': 'documents',
+        'HAYSTACK_SEARCH_RESULTS_PER_PAGE':7,
+        'INCLUDE_SPELLING': True,
+    },
+}
+
+#HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.BaseSignalProcessor'
+HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
+
+if es.username:
+    HAYSTACK_CONNECTIONS['default']['KWARGS'] = {"http_auth": es.username + ':' + es.password}
+    
 #tinymce
 TINYMCE_DEFAULT_CONFIG = {
     'theme': "advanced", 
@@ -141,10 +177,13 @@ TINYMCE_DEFAULT_CONFIG = {
     'plugins': 'paste',
 }
 
+DEBUG_FRONT = DEBUG
+#DEBUG_FRONT = False
 
 # available context from settings in template
 SETTINGS_EXPORT = [
     'DEBUG',
+    'DEBUG_FRONT', 
     'LANGUAGE_CODE',
     'SITE_NAME',
     'META_DESCRIPTION',
