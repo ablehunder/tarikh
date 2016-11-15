@@ -1,7 +1,10 @@
 .pydevproject
 .project
 db.sqlite3
+site_media
 migrations
+fixtures
+elasticsearch
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

@@ -61,6 +61,9 @@
 {% endblock %}
     
 {% block content %}
+		<div class="no-script">
+			No Scripppptt?????
+		</div>
     <div class="topic-info">
     		<div class="topic-thumbnail" >
     		{% if topic.thumbnail_url %}
@@ -82,36 +85,43 @@
     <div class="container">        
     	<div class="btn-group btn-mode-wrap hidden" data-toggle="buttons">
 			  <label class="btn btn-default" data-toggle="tooltip" data-placement="top" title="{% trans 'Desktop/Tablet Mode - Horizontal Timeline' %}">
-			    <input type="radio" name="mode" value="horizontal" autocomplete="off"> <i class="fa fa-desktop fa-lg"></i>
+			    <input type="radio" name="mode" value="horizontal" autocomplete="off"> <i class="fa fa-fw fa-desktop fa-lg"></i>
 			  </label>
 			  <label class="btn btn-default btn-inverse active" data-toggle="tooltip" data-placement="top" title="{% trans 'Mobile Mode - Vertical Timeline' %}">
-			    <input type="radio" name="mode" value="vertical" autocomplete="off" checked> <i class="fa fa-tablet fa-lg"></i>
+			    <input type="radio" name="mode" value="vertical" autocomplete="off" checked> <i class="fa fa-fw fa-tablet fa-lg"></i>
 			  </label>
 			</div>
     	<div class="btn-group btn-mode-wrap" data-toggle="buttons">
 			  <a class="btn btn-default {% if not request.GET.o or request.GET.o == 'year_start' %}active{% endif %}" data-toggle="tooltip" data-placement="top" title="{% trans 'Sort Date Ascending' %}"
 					href="?o=year_start{% for key, value in request.GET.items %}{% if key != 'o' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">
-					<i class="fa fa-sort-numeric-asc fa-lg"></i>
+					<i class="fa fa-fw fa-sort-numeric-asc fa-lg"></i>
 				</a>
 			  <a class="btn btn-default {% if request.GET.o == '-year_start' %}active{% endif %}" data-toggle="tooltip" data-placement="top" title="{% trans 'Sort Date Descending' %}"
 					href="?o=-year_start{% for key, value in request.GET.items %}{% if key != 'o' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">
-					<i class="fa fa-sort-numeric-desc fa-lg"></i>
+					<i class="fa fa-fw fa-sort-numeric-desc fa-lg"></i>
 				</a>
 			</div>
     	<div class="btn-group btn-mode-wrap hidden" data-toggle="buttons">
 			  <label class="btn btn-default" data-toggle="tooltip" data-placement="top" title="{% trans 'Sort Date Ascending' %}">
-			    <input type="radio" name="sort" value="asc" autocomplete="off"> <i class="fa fa-sort-numeric-asc fa-lg"></i>
+			    <input type="radio" name="sort" value="asc" autocomplete="off"> <i class="fa fa-fw fa-sort-numeric-asc fa-lg"></i>
 			  </label>
 			  <label class="btn btn-default active" data-toggle="tooltip" data-placement="top" title="{% trans 'Sort Date Descending' %}">
-			    <input type="radio" name="sort" value="desc" autocomplete="off" checked> <i class="fa fa-sort-numeric-desc fa-lg"></i>
+			    <input type="radio" name="sort" value="desc" autocomplete="off" checked> <i class="fa fa-fw fa-sort-numeric-desc fa-lg"></i>
 			  </label>
 			</div>
     	<div class="btn-group btn-mode-wrap hidden" data-toggle="buttons">
 			  <label class="btn btn-default" data-toggle="tooltip" data-placement="top" title="{% trans 'Hijri' %}">
-			    <input type="radio" name="calendar" value="hijri" autocomplete="off"> <i class="fa fa-moon-o fa-lg"></i>
+			    <input type="radio" name="calendar" value="hijri" autocomplete="off"> <i class="fa fa-fw fa-moon-o fa-lg"></i>
 			  </label>
 			  <label class="btn btn-default active" data-toggle="tooltip" data-placement="top" title="{% trans 'Gregorian' %}">
-			    <input type="radio" name="calendar" value="gregorian" autocomplete="off" checked> <i class="fa fa-sun-o fa-lg"></i>
+			    <input type="radio" name="calendar" value="gregorian" autocomplete="off" checked> <i class="fa fa-fw fa-sun-o fa-lg"></i>
+			  </label>
+			</div>
+    	<div class="btn-group btn-mode-wrap hidden" data-toggle="buttons">
+			  <label class="btn btn-default" data-toggle="tooltip" data-placement="top" title="{% trans 'Font Size' %}">
+			    <input type="checkbox" name="font-size" value="bigger" autocomplete="off"> 
+			    <i class="fa fa-fw fa-font fa-stack-1x"></i> 
+			    <i class="fa fa-fw fa-font fa-stack-2x fa-lg"></i>
 			  </label>
 			</div>
     </div>
