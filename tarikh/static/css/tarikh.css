@@ -102,6 +102,7 @@ body{
 .fa-twitter{ color:#55acee; }
 .fa-telegram{ color:#0088cc; }
 .fa-get-pocket{ color:#ef4056; }
+.fa-fw { width:18px; }
 
 .site-footer {
 	background-color:#dedede;
