@@ -29,7 +29,8 @@ DEBUG = (os.environ.get('DJANGO_DEBUG')=='True') or False
 #ALLOWED_HOSTS = []
 #DEBUG = False
 ALLOWED_HOSTS = ['localhost']
-
+# Allow all host headers
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -92,7 +93,12 @@ DATABASES = {
     },
 }
 
-DATABASES['default'] = dj_database_url.config() if os.environ.get('DATABASE_URL') else DATABASES['default']
+# Update database configuration with $DATABASE_URL.
+db_from_env = dj_database_url.config(conn_max_age=500)
+DATABASES['default'].update(db_from_env)
+
+# Honor the 'X-Forwarded-Proto' header for request.is_secure()
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # Password validation
 # https://docs.djangoproject.com/en/1.9/ref/settings/#auth-password-validators
