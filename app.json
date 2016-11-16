@@ -1,0 +1,8 @@
+{
+  "name": "tarikh",
+  "description": "Tarikh, kronologi sejarah indah dan mudah",
+  "image": "heroku/python",
+  "repository": "https://github.com/ablehunder/tarikh",
+  "keywords": ["python", "django", "tarikh" ],
+  "addons": [ "heroku-postgresql", "heroku-searchbox" ]
+}
