@@ -8,7 +8,8 @@ from django.forms.models import ModelForm
 from tarikh.models import Topic, Event
 
 class TopicForm(ModelForm):
-    slug = forms.SlugField(disabled=True,)
+    pass
+    #slug = forms.SlugField(disabled=True,)
             
     class Meta:
         model = Topic
