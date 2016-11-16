@@ -125,6 +125,21 @@
 		  </div>
 		</nav>
 {% endblock %}
+		<noscript>
+		<div class="container no-script">
+		<div class="panel panel-warning ">
+			<div class="panel-heading">
+			<h4 class="panel-title">{% trans 'No Script'%} ??</h4>
+			</div>
+			<div class="panel-body">
+			{% blocktrans %}
+			Your browser has javascript disabled or blocked for this site.
+			Please enable it to get best viewing feature. 
+			{% endblocktrans %}
+			</div>
+		</div>
+		</div>
+		</noscript>
 {% block main-container %}
 		<div class="main-content container">
 {% block content %}

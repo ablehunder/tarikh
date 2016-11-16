@@ -5,10 +5,10 @@
 import os
 from urllib.parse import urlparse
 from django.utils.translation import ugettext_lazy as _
+import dj_database_url
 
-
-SITE_NAME = 'tarikh'
-META_DESCRIPTION = 'Tarikh, kronologi sejarah indah dan mudah'
+SITE_NAME = os.environ.get('SITE_NAME') or 'tarikh'
+META_DESCRIPTION = os.environ.get('META_DESCRIPTION') or 'Tarikh, kronologi sejarah indah dan mudah'
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 
@@ -25,10 +25,10 @@ PAGES_DIR = os.path.join(BASE_DIR, "pages")
 SECRET_KEY = 'mg6s@2m0ez%ho%9!nbc=jvx(=0e=)yqx2*5ya0d1#(ivzx9c@)'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-ALLOWED_HOSTS = []
+DEBUG = (os.environ.get('DJANGO_DEBUG')=='True') or False
+#ALLOWED_HOSTS = []
 #DEBUG = False
-#ALLOWED_HOSTS = ['localhost']
+ALLOWED_HOSTS = ['localhost']
 
 
 # Application definition
@@ -86,20 +86,13 @@ WSGI_APPLICATION = 'tarikh.wsgi.application'
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
 
 DATABASES = {
-    'dev': {
+    'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    },    
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'tarikh',
-        'USER': 'tarikhmysql',
-				'PASSWORD': 'tarikhmysql', 
-				'HOST': 'localhost',
-				'PORT': '3306',
-    }
+    },
 }
 
+DATABASES['default'] = dj_database_url.config() if os.environ.get('DATABASE_URL') else DATABASES['default']
 
 # Password validation
 # https://docs.djangoproject.com/en/1.9/ref/settings/#auth-password-validators

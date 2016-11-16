@@ -61,9 +61,6 @@
 {% endblock %}
     
 {% block content %}
-		<div class="no-script">
-			No Scripppptt?????
-		</div>
     <div class="topic-info">
     		<div class="topic-thumbnail" >
     		{% if topic.thumbnail_url %}
@@ -117,13 +114,14 @@
 			    <input type="radio" name="calendar" value="gregorian" autocomplete="off" checked> <i class="fa fa-fw fa-sun-o fa-lg"></i>
 			  </label>
 			</div>
-    	<div class="btn-group btn-mode-wrap hidden" data-toggle="buttons">
-			  <label class="btn btn-default" data-toggle="tooltip" data-placement="top" title="{% trans 'Font Size' %}">
-			    <input type="checkbox" name="font-size" value="bigger" autocomplete="off"> 
-			    <i class="fa fa-fw fa-font fa-stack-1x"></i> 
-			    <i class="fa fa-fw fa-font fa-stack-2x fa-lg"></i>
+			<!--
+    	<div class="btn-group" data-toggle="buttons">
+			  <label for="input2" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="{% trans 'Font Size' %}">
+			    <input type="checkbox" name="font-size" value="bigger" autocomplete="off">
+			    <i class="fa fa-fw fa-text-height fa-lg"></i>
 			  </label>
 			</div>
+			-->
     </div>
 		</div>
 		<div class='timeline-wrap'>
