@@ -31,7 +31,7 @@
           {% endif %}
       		</div>
       		<div class="topic-text">
-					<h3>{% highlight o.title with query %}</h3>
+					<h3>{{o.title}}</h3>
 					<sup class="pull-right">{{t.score|floatformat:2}} &nbsp;<!--{% widthratio t.score 1 100 %}%--></sup>
           <p>{% highlight t.get_stored_fields.text with query %}</p>
           </div>

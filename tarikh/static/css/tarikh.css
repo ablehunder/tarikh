@@ -15,7 +15,8 @@ body{
 	line-height: calc(1.3em + (1.5 - 1.3) * ((100vw - 21em)/(35 - 21)));
 }
 .highlighted {
-	background-color: #fafa8f;
+	/*background-color: #fafa8f;*/
+	font-weight: bold;
 }
 .full-content {
 	padding-top:50px;/*navbar*/
