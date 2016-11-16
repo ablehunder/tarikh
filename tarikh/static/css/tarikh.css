@@ -306,6 +306,9 @@ body{
   background: none; 
 }
 
+.topic-rm-wrap{
+	min-height:50px;
+}
 .topic-rm-trigger{
 	margin-top:-50px;
 	padding-top:50px;  
