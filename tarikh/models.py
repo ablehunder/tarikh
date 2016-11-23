@@ -11,6 +11,7 @@ from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 from django.db.models.fields import URLField
 from haystack import indexes
+from django.contrib.sitemaps import ping_google
 
 class Topic(models.Model):
     title = models.CharField(_("Title"), max_length=256, help_text="Provide title for this topic")
@@ -60,10 +61,19 @@ class Topic(models.Model):
         else:
             if self.published:
                 self.published_date = timezone.now()
-            
-        return models.Model.save(self, force_insert=force_insert, 
+        
+        retval = models.Model.save(self, force_insert=force_insert, 
                                  force_update=force_update, 
                                  using=using, update_fields=update_fields)    
+
+#         try:
+#             ping_google()
+#         except Exception:
+#             # Bare 'except' because we could get a variety
+#             # of HTTP-related exceptions.
+#             pass            
+
+        return retval   
         
 class Event(models.Model):
     name = models.CharField(_('Name'), max_length=256)

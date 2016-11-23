@@ -7,6 +7,7 @@ from urllib.parse import urlparse
 from django.utils.translation import ugettext_lazy as _
 import dj_database_url
 
+SITE_ID = 1
 SITE_NAME = os.environ.get('SITE_NAME') or 'tarikh'
 META_DESCRIPTION = os.environ.get('META_DESCRIPTION') or 'Tarikh, timeline / lini masa, kronologi sejarah indah dan mudah'
 
@@ -45,6 +46,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
+    'django.contrib.sitemaps',
     'django.contrib.flatpages',
     'constance.backends.database',
     'constance',
@@ -65,7 +67,7 @@ MIDDLEWARE_CLASSES = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.contrib.sites.middleware.CurrentSiteMiddleware',
-    'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware'
+    'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
 ]
 
 ROOT_URLCONF = 'tarikh.urls'
