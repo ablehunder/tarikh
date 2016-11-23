@@ -1,0 +1,14 @@
+{% extends "_base.html" %}
+{% load flatpages %}
+
+{% comment %}
+@author: aby
+{% endcomment %}
+
+{% block doc-title %}{{flatpage.title}} | {{block.super}}{% endblock %}
+
+{% block navbar-class %}navbar-fixed-top{% endblock %}
+
+{% block main-container %}
+{{flatpage.content}}
+{% endblock %}

@@ -61,6 +61,7 @@
 {% endblock %}
     
 {% block content %}
+	  <input id="tbtn-font" type="checkbox" name="font" value="small" class="hidden" autocomplete="off"> 
     <div class="topic-info">
     		<div class="topic-thumbnail" >
     		{% if topic.thumbnail_url %}
@@ -78,16 +79,32 @@
         </div>
     </div>
 		<div class="pre-toolbar clearfix"></div>
+	  <input id="tbtn-mode" type="checkbox" name="mode" checked value="horizontal" class="hidden" autocomplete="off"> 
+	  <input id="tbtn-cal" type="checkbox" name="calendar" checked value="gregorian" class="hidden" autocomplete="off"> 
     <div class="navbar toolbar-top">
     <div class="container">        
-    	<div class="btn-group btn-mode-wrap hidden" data-toggle="buttons">
-			  <label class="btn btn-default" data-toggle="tooltip" data-placement="top" title="{% trans 'Desktop/Tablet Mode - Horizontal Timeline' %}">
-			    <input type="radio" name="mode" value="horizontal" autocomplete="off"> <i class="fa fa-fw fa-desktop fa-lg"></i>
+    	<div class="btn-mode-wrap hidden">
+				<label for="tbtn-mode">
+			  <i class="fa fa-fw fa-desktop fa-lg" data-toggle="tooltip" data-placement="top" title="{% trans 'Desktop/Tablet Mode - Horizontal Timeline' %}"></i>
+			  <i class="fa fa-fw fa-tablet fa-lg" data-toggle="tooltip" data-placement="top" title="{% trans 'Mobile Mode - Vertical Timeline' %}"></i>
 			  </label>
-			  <label class="btn btn-default btn-inverse active" data-toggle="tooltip" data-placement="top" title="{% trans 'Mobile Mode - Vertical Timeline' %}">
-			    <input type="radio" name="mode" value="vertical" autocomplete="off" checked> <i class="fa fa-fw fa-tablet fa-lg"></i>
+	
+		  	<input id="tbtn-sort" type="checkbox" name="sort" checked disabled value="asc" class="hidden" autocomplete="off"> 
+				<label for="tbtn-sort">
+			  <i class="fa fa-fw fa-sort-numeric-asc fa-lg" data-toggle="tooltip" data-placement="top" title="{% trans 'Sort Date Ascending' %}"></i>
+			  <i class="fa fa-fw fa-sort-numeric-desc fa-lg" data-toggle="tooltip" data-placement="top" title="{% trans 'Sort Date Descending' %}"></i>
+			  </label>
+	
+				<label for="tbtn-cal">
+			  <i class="fa fa-fw fa-sun-o fa-lg" data-toggle="tooltip" data-placement="top" title="{% trans 'Gregorian' %}"></i>
+			  <i class="fa fa-fw fa-moon-o fa-lg" data-toggle="tooltip" data-placement="top" title="{% trans 'Hijri' %}"></i>
+			  </label>
+				<label for="tbtn-font">
+			  <i class="fa fa-fw fa-font fa-1x" data-toggle="tooltip" data-placement="top" title="{% trans 'Small Font' %}"></i>
+			  <i class="fa fa-fw fa-font fa-lg" data-toggle="tooltip" data-placement="top" title="{% trans 'Large Font' %}"></i>
 			  </label>
 			</div>
+			
     	<div class="btn-group btn-mode-wrap" data-toggle="buttons">
 			  <a class="btn btn-default {% if not request.GET.o or request.GET.o == 'year_start' %}active{% endif %}" data-toggle="tooltip" data-placement="top" title="{% trans 'Sort Date Ascending' %}"
 					href="?o=year_start{% for key, value in request.GET.items %}{% if key != 'o' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">
@@ -98,14 +115,7 @@
 					<i class="fa fa-fw fa-sort-numeric-desc fa-lg"></i>
 				</a>
 			</div>
-    	<div class="btn-group btn-mode-wrap hidden" data-toggle="buttons">
-			  <label class="btn btn-default" data-toggle="tooltip" data-placement="top" title="{% trans 'Sort Date Ascending' %}">
-			    <input type="radio" name="sort" value="asc" autocomplete="off"> <i class="fa fa-fw fa-sort-numeric-asc fa-lg"></i>
-			  </label>
-			  <label class="btn btn-default active" data-toggle="tooltip" data-placement="top" title="{% trans 'Sort Date Descending' %}">
-			    <input type="radio" name="sort" value="desc" autocomplete="off" checked> <i class="fa fa-fw fa-sort-numeric-desc fa-lg"></i>
-			  </label>
-			</div>
+			<!--
     	<div class="btn-group btn-mode-wrap hidden" data-toggle="buttons">
 			  <label class="btn btn-default" data-toggle="tooltip" data-placement="top" title="{% trans 'Hijri' %}">
 			    <input type="radio" name="calendar" value="hijri" autocomplete="off"> <i class="fa fa-fw fa-moon-o fa-lg"></i>
@@ -114,6 +124,7 @@
 			    <input type="radio" name="calendar" value="gregorian" autocomplete="off" checked> <i class="fa fa-fw fa-sun-o fa-lg"></i>
 			  </label>
 			</div>
+			-->
 			<!--
     	<div class="btn-group" data-toggle="buttons">
 			  <label for="input2" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="{% trans 'Font Size' %}">
@@ -128,6 +139,7 @@
     <div id='timeline-embed'></div>
     </div>
     <div class="topic-info-more">
+    {%if topic.description or topic.footnote or topic.tags %}
         <input type="checkbox" class="rm-state" id="topic-rm-wrap" />
         <div class="topic-rm-wrap rm-wrap">
       	<label for="topic-rm-wrap" class="rm-trigger rm-target">
@@ -139,6 +151,7 @@
 					<span class="rm-textmore"><i class="fa fa-lg fa-angle-down"></i> {% trans 'More' %} <i class="fa fa-lg fa-angle-down"></i></span>
 					<span class="rm-textless"><i class="fa fa-lg fa-angle-up"></i> {% trans 'Less' %} <i class="fa fa-lg fa-angle-up"></i></span>
 				</label>
+		{% endif %}
     </div>
 	{% if is_paginated %}
 				<div class="row pagination-wrap">

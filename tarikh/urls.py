@@ -4,6 +4,7 @@
 
 from django.conf.urls import include, url
 from django.contrib import admin
+from django.contrib.flatpages.views import flatpage 
 from django.views.generic.base import RedirectView
 from django.contrib.staticfiles.storage import staticfiles_storage
 from tarikh.views import HomeView, PageView, TopicView, EventView, SearchView
@@ -21,7 +22,13 @@ urlpatterns = [
             url=staticfiles_storage.url('favicon.ico'),
             permanent=False), name="favicon"
     ),
+    url(r'^apple-touch-icon.png$',
+        RedirectView.as_view(
+            url=staticfiles_storage.url('apple-touch-icon.png'),
+            permanent=False), name="apple-touch-icon"
+    ),
                
-    url(r'^(?P<page_name>[a-zA-Z0-9_-]+)$', PageView.as_view(), name='pages'),
+    #url(r'^(?P<page_name>[a-zA-Z0-9_-]+)$', PageView.as_view(), name='pages'),    
     url(r'^$', HomeView.as_view(), name='home'),
+    url(r'^(?P<url>.*)$', flatpage),
 ]

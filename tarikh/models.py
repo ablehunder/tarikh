@@ -86,9 +86,11 @@ class Event(models.Model):
                             help_text='Occurance year, you may fill negative value if it is BC in Gregorian Calendar')
     month_start = models.PositiveSmallIntegerField('Occurance Month', blank=True, null=True)
     day_start = models.PositiveSmallIntegerField('Occurance Day', blank=True, null=True)
+    time_start = models.TimeField('Occurance Time', blank=True, null=True)
     year_end = models.IntegerField('Year of Occurance End', blank=True, null=True)
     month_end = models.PositiveSmallIntegerField('Month of Occurance End', blank=True, null=True)
     day_end = models.PositiveSmallIntegerField('Date of Occurance End', blank=True, null=True)
+    time_end = models.TimeField('Time of Occurance End', blank=True, null=True)
 
     related_events = models.TextField('Related events', blank=True, null=True,
                         help_text='Related events, one event per line')

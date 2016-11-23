@@ -10,16 +10,16 @@ $(function () {
 		width = $(window).width(), height = $(window).height(),
 		minWidth = 768, minHeight = 540, 
 		isVert = (width < minWidth) &&  (height < minHeight),
-		$mode = $("input[name='mode']"), mode = $mode.filter(":checked").val(),
-		$sort = $("input[name='sort']"), sort = $sort.filter(":checked").val(),
-		$cal = $("input[name='calendar']"), cal = $cal.filter(":checked").val(),
+		$mode = $("input[name='mode']"), mode = $mode.is(":checked"),
+		$sort = $("input[name='sort']"), sort = $sort.is(":checked"),
+		$cal = $("input[name='calendar']"), cal = $cal.is(":checked"),
 		desktopH = mobileH = minHeight,
 		doResizeTimeline = function(){
-			var cmode = $mode.filter(":checked").val();
+			var cmode = $mode.is(":checked");
 			mobileH = $('body').height() - $('.pre-toolbar').height() 
 				- $('.toolbar-top').height() -  $('.toolbar-bottom').height() - 10;
 			desktopH = mobileH - $('.pre-toolbar').offset().top;
-			(cmode!='vertical') && $('#timeline-embed').height(
+			(cmode) && $('#timeline-embed').height(
 				(!isVert? (TL.Browser.mobile?mobileH:desktopH) : mobileH )+'px');
 		},
 		evData = [],
@@ -27,18 +27,29 @@ $(function () {
 		dl = document.documentElement, lang = (dl.lang?dl.lang:navigator.language),
 		gc = $.calendars.instance(null, lang.substring(0, 2)),
 		hc = $.calendars.instance('islamic'),
-		formatDate = function(y,m,d,s,t){
+		getDate = function(y,m,d,t,s,tg){
+			if (!y) return '';
+			var c = (s=='hijri'?hc:gc), 
+				nd = c.newDate(y,m?m:1,d?d:1),
+				j = nd.toJD(), 
+				rd = (tg?gc:hc).fromJD(j);
+			return rd;
+		},
+		formatDate = function(y,m,d,t,s,tg){
 			if (!y) return '';
 			var c = (s=='hijri'?hc:gc), 
 				nd = c.newDate(y,m?m:1,d?d:1),
 				f = m?(d?'d M yyyy':'MM Y'):'Y',
 				j = nd.toJD(), 
-				fd = (t=='hijri'?hc:gc).fromJD(j).formatDate(f);
+				fd = (tg?gc:hc).fromJD(j).formatDate(f);
 			return m?fd:parseInt(fd);
 		},
 		drawHorizontal = function(ccal){
-			if (window.tlembed) return;
-			var ccal = $cal.filter(":checked").val(),
+// 			if (window.tlembed) {
+// 				window.tlembed.updateDisplay();
+// 				return;
+// 			}
+			var ccal = $cal.is(":checked"),
 				// @see https://timeline.knightlab.com/docs/json-format.html
 				timeline_json = {
 					'title': {'text':{//'headline': $('.topic-header').text(),
@@ -73,12 +84,16 @@ $(function () {
       
 			$.each(evData, function(k,v){
 				var f = v.fields, 
+					sd = getDate(f.year_start, f.month_start, f.day_start, 
+						f.time_start, f.calendar_type, ccal),
 					ev = {
-						'start_date': { 'year': f.year_start, 'month': f.month_start, 
-							'day': f.day_start, 
+						'start_date': { 'year': f.year_start?sd.year():null, 
+							'month': f.month_start?sd.month():null, 
+							'day': f.day_start?sd.day():null, 
+							// 'hour', 'minute', 'second', 'millisecond'
 							// show display_date according to calendar used
 							'display_date': formatDate(f.year_start, f.month_start, 
-								f.day_start, f.calendar_type, ccal) 
+								f.day_start, f.time_start, f.calendar_type, ccal) 
 						}, 
 						'text' : { 'headline': f.name, 'text': setText(v) }, 
 						'group' : f.group?f.group:'',
@@ -93,6 +108,7 @@ $(function () {
 				f.year_end && (ev['end_date'] = { 'year': f.year_end});
 				f.month_end && (ev['end_date']['month'] = f.month_end); 
 				f.day_end && (ev['end_date']['day'] = f.day_end); 
+				f.time_end && (ev['end_date']['time'] = f.time_end); 
 				timeline_json['events'].push(ev);
 			});
 			
@@ -103,7 +119,8 @@ $(function () {
 					//'hash_bookmark': true,
 					'use_bc':true
 				};
-				
+			TL.Language.languages['en']['era_labels']['negative_year']['suffix'] = 
+				ccal?'BCE':'BHE';
 			var tl = window.tlembed 
 				= new TL.Timeline('timeline-embed', timeline_json, timeline_options);
 			
@@ -126,7 +143,7 @@ $(function () {
 						$(cs._el.content).find('.tl-text-content').html(setText(data[0]));
 					});      	
 			});
-			if (evData[0].pk == tophash.substr(1)) tophash=null;
+			if (tophash && evData[0].pk == tophash.substr(1)) tophash=null;
       tl.goToId(hash || tophash);
 			/**
 			 * css check
@@ -138,7 +155,7 @@ $(function () {
       //console.log('topic:drawHorizontal end', ccal, timeline_json);
 		},
 		drawVertical = function(ccal,csort){
-			var ccal = $cal.filter(":checked").val(),
+			var ccal = $cal.is(":checked"),
 				setText = function(el, t){
 					var f = t.fields, re = f.related_events,
 						revs = $.map(re? re.split('\n'):'', function(r){
@@ -156,10 +173,10 @@ $(function () {
 				$(el).find(".event-pk").attr('name', "/"+v.pk);
 				$(el).find(".event-title").text(f.name);
 				$(el).find(".event-start-time").text(formatDate(f.year_start, 
-					f.month_start, f.day_start, f.calendar_type, ccal));
+					f.month_start, f.day_start, f.time_start, f.calendar_type, ccal));
 				$(el).find(".event-end-time").text((f.year_end?' \u2014 ':'') 
 					+ formatDate(f.year_end, f.month_end, 
-							f.day_end, f.calendar_type, ccal));
+							f.day_end, f.time_end, f.calendar_type, ccal));
 				setText(el, v);
 				$(el).find(".event-link")
 					.attr('href', location.origin + location.pathname + v.pk)
@@ -179,19 +196,18 @@ $(function () {
 			});
 			var o=$tlv.find('a.event-pk[name="'+(hash?hash:tophash)+'"]').offset();
 			o && $('body,html').animate({scrollTop: o.top ,}, 1);
-			//console.log('topic:drawVertical end', ccal);
+			//console.log('topic:drawVertical end', csort, sort, ccal);
 		},
 		doDrawTimeline = function(){
 			//console.log('topic:doDrawTimeline begin');
 			if (!activateTimeline) return;		
-			var cmode = $mode.filter(":checked").val(),
-					vertMode = (cmode=='vertical'),
-					csort = $sort.filter(":checked").val(),
-					ccal = $cal.filter(":checked").val();
+			var cmode = $mode.is(":checked"),
+					csort = $sort.is(":checked"),
+					ccal = $cal.is(":checked");
 			$('.timeline, .topic-info label, .topic-info-more')
-				.toggleClass('hidden', !vertMode);
-			$('.timeline-wrap').toggleClass('hidden', vertMode); 
-			(vertMode) ? drawVertical(ccal,csort) : drawHorizontal(ccal);
+				.toggleClass('hidden', cmode);
+			$('.timeline-wrap').toggleClass('hidden', !cmode); 
+			(cmode) ? drawHorizontal(ccal) : drawVertical(ccal,csort);
 			sort = csort; cal = ccal; mode = cmode;
 			//console.log('topic:doDrawTimeline end');
 		},
@@ -210,7 +226,7 @@ $(function () {
 	/* toolbar init */
 	$mode.on('change', function(){
 			var cmode = $mode.filter(":checked").val();
-			$sort.closest('.btn').toggleClass('disabled', cmode=='horizontal');
+			$sort.attr('disabled', cmode=='horizontal');
 		});
 	(!isVert && ('vertical'==mode)) && $.fn.button &&
 		$("input[name='mode'][value='horizontal']")

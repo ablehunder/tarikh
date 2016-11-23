@@ -41,7 +41,10 @@ body{
 .full-bg{
 	background-repeat: no-repeat;
 	background-position: center;
-	background-size: cover;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
 }
 .text-white * {
 	color:white;
@@ -103,7 +106,6 @@ body{
 .fa-twitter{ color:#55acee; }
 .fa-telegram{ color:#0088cc; }
 .fa-get-pocket{ color:#ef4056; }
-.fa-fw { width:18px; }
 
 .site-footer {
 	background-color:#dedede;
@@ -135,6 +137,49 @@ body{
 	padding-bottom:0px;
 	bottom:0px;
 	background-color:transparent;
+}
+
+.toolbar-top label{
+	cursor: pointer;
+	min-width: 30px;
+	padding: 0 5px;
+	text-align:center;
+	margin: 0 1px;
+}	
+.toolbar-top label:hover{
+	background-color:black;
+	color:white;
+}
+
+#tbtn-mode ~ .toolbar-top .fa-desktop,
+#tbtn-mode:checked ~ .toolbar-top .fa-tablet, 
+#tbtn-sort ~ label .fa-sort-numeric-asc,
+#tbtn-sort:checked ~ label .fa-sort-numeric-desc,
+#tbtn-cal ~ .toolbar-top .fa-sun-o,
+#tbtn-cal:checked ~ .toolbar-top .fa-moon-o,
+#tbtn-font:checked ~ .toolbar-top .fa-font.fa-1x,
+#tbtn-font ~ .toolbar-top .fa-font.fa-lg
+{
+	display: none;
+}
+
+#tbtn-sort:disabled + label, 
+#tbtn-sort:disabled + label:hover
+{
+	background-color:transparent;
+	color:#888;
+}
+
+#tbtn-mode:checked ~ .toolbar-top .fa-desktop,
+#tbtn-mode ~ .toolbar-top .fa-tablet, 
+#tbtn-sort:checked ~ label .fa-sort-numeric-asc ,
+#tbtn-sort ~ label .fa-sort-numeric-desc, 
+#tbtn-cal:checked ~ .toolbar-top .fa-sun-o,
+#tbtn-cal ~ .toolbar-top .fa-moon-o,
+#tbtn-font ~ .toolbar-top .fa-font.fa-1x,
+#tbtn-font:checked ~ .toolbar-top .fa-font.fa-lg
+{
+	display: inline;
 }
 
 .toolbar-share{
@@ -203,6 +248,7 @@ body{
 	margin: 20px 20px;
 	display:inline-block;
 	float:left;
+	background-image:url(../img/logo.png);
 }
 .topic-thumbnail ~ div {
 	overflow:hidden;
@@ -409,8 +455,10 @@ a.event-link{
   border-radius:8px;
 }
 .timeline li:hover:before{
-  content: "\2023";
-  left: -6px;
+  /*content: "\2023";*/
+  content: "";
+  font-size: 2em;
+  left: -4px;
 }
 
 
@@ -457,4 +505,15 @@ a.event-link{
 }
 .tl-text .tl-headline{
 	font-size:22px ;
+}
+
+#tbtn-font:checked ~ .timeline-wrap #timeline-embed .tl-timemarker-content-container *,
+#tbtn-font:checked ~ .timeline-wrap #timeline-embed .tl-text-content-container *,
+#tbtn-font:checked ~ .topic-info-more *,
+#tbtn-font:checked ~ .timeline li * {
+	font-size:20px;
+	line-height: calc(1.6em + (1.5 - 1.3) * ((100vw - 21em)/(35 - 21)));
+}
+#tbtn-font:checked ~ .timeline-wrap #timeline-embed .tl-timemarker-content-container *{
+	line-height: 1em;
 }

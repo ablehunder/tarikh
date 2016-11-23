@@ -32,6 +32,8 @@ ALLOWED_HOSTS = ['localhost']
 # Allow all host headers
 ALLOWED_HOSTS = ['*']
 
+APPEND_SLASH = False
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -41,6 +43,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
+    'django.contrib.flatpages',
     'haystack',
     'logentry_admin',
     'tinymce',
@@ -49,6 +53,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE_CLASSES = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -56,6 +61,7 @@ MIDDLEWARE_CLASSES = [
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware'
 ]
 
 ROOT_URLCONF = 'tarikh.urls'
@@ -180,8 +186,7 @@ TINYMCE_DEFAULT_CONFIG = {
     'plugins': 'paste',
 }
 
-DEBUG_FRONT = DEBUG
-#DEBUG_FRONT = False
+DEBUG_FRONT = (os.environ.get('DJANGO_DEBUG_FRONT')=='True') or False
 
 # available context from settings in template
 SETTINGS_EXPORT = [
