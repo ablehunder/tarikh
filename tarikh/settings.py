@@ -8,7 +8,7 @@ from django.utils.translation import ugettext_lazy as _
 import dj_database_url
 
 SITE_NAME = os.environ.get('SITE_NAME') or 'tarikh'
-META_DESCRIPTION = os.environ.get('META_DESCRIPTION') or 'Tarikh, kronologi sejarah indah dan mudah'
+META_DESCRIPTION = os.environ.get('META_DESCRIPTION') or 'Tarikh, timeline / lini masa, kronologi sejarah indah dan mudah'
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 
@@ -35,6 +35,7 @@ ALLOWED_HOSTS = ['*']
 APPEND_SLASH = False
 
 # Application definition
+CONSTANCE_BACKEND = 'constance.backends.database.DatabaseBackend'
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -45,6 +46,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sites',
     'django.contrib.flatpages',
+    'constance.backends.database',
+    'constance',
     'haystack',
     'logentry_admin',
     'tinymce',
@@ -80,7 +83,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'django_settings_export.settings_export',         
+                #'django_settings_export.settings_export',
+								'constance.context_processors.config',         
             ],
         },
     },
@@ -189,10 +193,9 @@ TINYMCE_DEFAULT_CONFIG = {
 DEBUG_FRONT = (os.environ.get('DJANGO_DEBUG_FRONT')=='True') or False
 
 # available context from settings in template
-SETTINGS_EXPORT = [
-    'DEBUG',
-    'DEBUG_FRONT', 
-    'LANGUAGE_CODE',
-    'SITE_NAME',
-    'META_DESCRIPTION',
-]
+CONSTANCE_CONFIG = {
+    'DEBUG' : ( DEBUG, "Debug Mode" ),
+    'DEBUG_FRONT' : ( DEBUG_FRONT, "Debug Mode for Front End" ),
+    'LANGUAGE_CODE' : ( LANGUAGE_CODE, "Language Code" ),
+    'META_DESCRIPTION' : ( META_DESCRIPTION, "Meta Description" ),
+}

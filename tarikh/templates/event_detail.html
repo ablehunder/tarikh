@@ -27,7 +27,7 @@
     <div class="topic-info">
     		<div class="topic-thumbnail" >
     		{% if object.topic.thumbnail_url %}
-    			<img {% if settings.DEBUG %} src="{% static 'img/logo.png' %}" {% else %} src="{{object.thumbnail_url}}" {% endif %} class="topic-img" >
+    			<img {% if config.DEBUG %} src="{% static 'img/logo.png' %}" {% else %} src="{{object.thumbnail_url}}" {% endif %} class="topic-img" >
     		{% else %}
     		<img src="{% static 'img/logo.png' %}" class="topic-img" >
         {% endif %}

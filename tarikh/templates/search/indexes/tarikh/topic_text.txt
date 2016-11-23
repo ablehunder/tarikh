@@ -1,14 +1,14 @@
-{{ object.title|default_if_none:"" }}
-{{ object.short_description|default_if_none:"" }}
+{{ object.title|default_if_none:""|striptags }}
+{{ object.short_description|default_if_none:""|striptags }}
 {{ object.description|default_if_none:""|striptags }}
 {{ object.footnote|default_if_none:""|striptags }}
-{{ object.tags|default_if_none:"" }}
+{{ object.tags|default_if_none:""|striptags }}
 
 {% for e in object.event_set.all %}
 {% if e.visible %}
-{{ e.name|default_if_none:"" }}
+{{ e.name|default_if_none:""|striptags }}
 {{ e.description|default_if_none:""|striptags }}
 {{ e.footnote|default_if_none:""|striptags }}
-{{ e.tags|default_if_none:"" }}    
+{{ e.tags|default_if_none:""|striptags }}    
 {% endif %}
 {% endfor %}

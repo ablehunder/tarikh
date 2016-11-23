@@ -5,7 +5,7 @@
 
 {% load static i18n %}
 {% block doc-title %}
-{{topic.title}} | {{ block.super }}
+{{topic.title}} | {{ site_name }}
 {% endblock %}
 
 {% block meta-description %}{{ block.super }}: {{topic.short_description}}{% endblock %}
@@ -21,7 +21,7 @@
 
 
 {% block styles %}
-	{%if settings.DEBUG_FRONT%}
+	{%if config.DEBUG_FRONT%}
     <link rel="stylesheet" id="timeline.css" href="{% static 'css/timeline.css' %}">
 	{%else%}
     <link rel="stylesheet" id="timeline.css" href="//cdn.knightlab.com/libs/timeline3/latest/css/timeline.css">
@@ -31,16 +31,16 @@
 
 {% block body-pre-scripts %}
 {{ block.super }}
-	{%if settings.DEBUG_FRONT%}
+	{%if config.DEBUG_FRONT%}
     <script src="{% static 'js/vendor/timeline.min.js' %}"></script>
     <script src="{% static 'js/vendor/jquery.calendars.min.js' %}"></script>
-    <script src="{% static 'js/vendor/jquery.calendars-'%}{{settings.LANGUAGE_CODE|slice:":2" }}.js"></script>
+    <script src="{% static 'js/vendor/jquery.calendars-'%}{{config.LANGUAGE_CODE|slice:":2" }}.js"></script>
     <script src="{% static 'js/vendor/jquery.calendars.plus.min.js' %}"></script>
     <script src="{% static 'js/vendor/jquery.calendars.islamic.min.js' %}"></script>      
 	{% else %}
     <script src="//cdn.knightlab.com/libs/timeline3/latest/js/timeline.js"></script>
     <script src="//gitcdn.xyz/repo/kbwood/calendars/master/jquery.calendars.min.js"></script>
-    <script src="//gitcdn.xyz/repo/kbwood/calendars/master/jquery.calendars-{{settings.LANGUAGE_CODE|slice:":2" }}.js"></script>
+    <script src="//gitcdn.xyz/repo/kbwood/calendars/master/jquery.calendars-{{config.LANGUAGE_CODE|slice:":2" }}.js"></script>
     <script src="//gitcdn.xyz/repo/kbwood/calendars/master/jquery.calendars.plus.min.js"></script>
     <script src="//gitcdn.xyz/repo/kbwood/calendars/master/jquery.calendars.islamic.min.js"></script>
 	{% endif %}
@@ -50,7 +50,7 @@
 			if (!$.calendars){
 				document.write(''
 					+ '<script src="{% static "js/vendor/jquery.calendars.min.js" %}"><\/script>'
-					+ '<script src="{% static "js/vendor/jquery.calendars-"%}{{settings.LANGUAGE_CODE|slice:":2" }}.js"><\/script>'
+					+ '<script src="{% static "js/vendor/jquery.calendars-"%}{{config.LANGUAGE_CODE|slice:":2" }}.js"><\/script>'
 					+ '<script src="{% static "js/vendor/jquery.calendars.plus.min.js" %}"><\/script>'
 					+ '<script src="{% static "js/vendor/jquery.calendars.islamic.min.js" %}"><\/script>'
 					);
@@ -67,7 +67,7 @@
     <div class="topic-info">
     		<div class="topic-thumbnail" >
     		{% if topic.thumbnail_url %}
-    			<img {% if settings.DEBUG_FRONT %} src="{% static 'img/logo.png' %}" {% else %} src="{{topic.thumbnail_url}}" {% endif %} class="topic-img" >
+    			<img {% if config.DEBUG_FRONT %} src="{% static 'img/logo.png' %}" {% else %} src="{{topic.thumbnail_url}}" {% endif %} class="topic-img" >
     		{% else %}
     		<img src="{% static 'img/logo.png' %}" class="topic-img" >
         {% endif %}

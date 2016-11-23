@@ -25,7 +25,7 @@
   	<a href="{% url 'topic' o.slug %}">
       		<div class="topic-thumbnail" >
       		{% if o.thumbnail_url %}
-      			<img {% if settings.DEBUG_FRONT %} src="{% static 'img/logo.png' %}" {% else %} src="{{o.thumbnail_url}}" {% endif %} class="topic-img" >
+      			<img {% if config.DEBUG_FRONT %} src="{% static 'img/logo.png' %}" {% else %} src="{{o.thumbnail_url}}" {% endif %} class="topic-img" >
       		{% else %}
       			<img src="{% static 'img/logo.png' %}" class="topic-img" >
           {% endif %}
@@ -41,7 +41,7 @@
   	<a href="{% url 'topic' t.slug %}">
       		<div class="topic-thumbnail" >
       		{% if t.thumbnail_url %}
-      			<img {% if settings.DEBUG_FRONT %} src="{% static 'img/logo.png' %}" {% else %} src="{{t.thumbnail_url}}" {% endif %} class="topic-img" >
+      			<img {% if config.DEBUG_FRONT %} src="{% static 'img/logo.png' %}" {% else %} src="{{t.thumbnail_url}}" {% endif %} class="topic-img" >
       		{% else %}
       			<img src="{% static 'img/logo.png' %}" class="topic-img" >
           {% endif %}

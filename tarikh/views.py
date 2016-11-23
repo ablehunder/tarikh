@@ -13,12 +13,13 @@ from django.http.response import HttpResponse
 from django.db.models import Q
 from haystack import views
 from datetime import datetime
+from constance import config
 
 class BaseView(TemplateView):
     
     def render_to_response(self, context, **response_kwargs):
         default_context = {
-            'meta_description': settings.META_DESCRIPTION,
+            'meta_description': config.META_DESCRIPTION,
         }
         new_context = {**default_context,  **context}
         
@@ -63,7 +64,7 @@ class HomeView(ListView):
     def render_to_response(self, context, **response_kwargs):
         
         default_context = {
-            'meta_description': settings.META_DESCRIPTION,
+            'meta_description': config.META_DESCRIPTION,
         }
         new_context = {**default_context,  **context}
         
@@ -130,7 +131,6 @@ class TopicView(ListView):
     def render_to_response(self, context, **response_kwargs):
         obj = Topic.objects.get(slug=self.kwargs['slug'])
         context ['topic'] = obj
-        context ['meta_description'] = obj.title
         
         if self.mode == 'a': # return ajax/json
             data = serializers.serialize('json', context['object_list'], 
@@ -160,7 +160,6 @@ class EventView(DetailView):
     
     def render_to_response(self, context, **response_kwargs):
         obj = context['object']        
-        context ['meta_description'] = obj.topic.title
 
         if self.mode == 'a': # return ajax/json
             data = serializers.serialize('json', [obj])
