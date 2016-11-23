@@ -8,6 +8,8 @@
 {{topic.title}} | {{ block.super }}
 {% endblock %}
 
+{% block meta-description %}{{ block.super }}: {{topic.short_description}}{% endblock %}
+
 {% block og-type %}article{% endblock %}
 {% block og-title %}{{topic.title}} | {{ block.super }}{% endblock %} 
 {% block og-image %}{% if topic.thumbnail_url %}{{topic.thumbnail_url}}{% else %}http://{{request.META.HTTP_HOST}}{% static 'img/logo.png' %}{% endif %}{% endblock %} 
