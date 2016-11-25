@@ -109,7 +109,8 @@ class Event(models.Model):
     
     class Meta:
     	get_latest_by = "year_start"
-    	ordering = ['-year_start', '-month_start', 'day_start']
+    	ordering = ['-year_start', '-month_start', '-day_start', '-time_start',
+               ]
     
     def get_absolute_url(self):
         return reverse('event', kwargs={'slug': self.topic.slug, 'pk': self.pk})
