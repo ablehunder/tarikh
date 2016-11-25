@@ -5,7 +5,7 @@
 $(function () {
 	//console.log('main:ready');
 	// tooltip, using bootstrap
-	$.tooltip && $('[data-toggle="tooltip"]').tooltip();
+	$.fn.tooltip && $('[data-toggle="tooltip"]').tooltip();
 	// search form animate
 	$('.search-form input[name="q"]')
 		.on('focus',function(){$('.search-form').animate({width:'100%'});})

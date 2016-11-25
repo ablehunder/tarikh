@@ -12,6 +12,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.db.models.fields import URLField
 from haystack import indexes
 from django.contrib.sitemaps import ping_google
+from constance import config
 
 class Topic(models.Model):
     title = models.CharField(_("Title"), max_length=256, help_text="Provide title for this topic")
@@ -64,14 +65,14 @@ class Topic(models.Model):
         
         retval = models.Model.save(self, force_insert=force_insert, 
                                  force_update=force_update, 
-                                 using=using, update_fields=update_fields)    
-
-#         try:
-#             ping_google()
-#         except Exception:
-#             # Bare 'except' because we could get a variety
-#             # of HTTP-related exceptions.
-#             pass            
+                                 using=using, update_fields=update_fields)
+        if config.PING_GOOGLE:                                  
+            try:
+                ping_google()
+            except Exception:
+                # Bare 'except' because we could get a variety
+                # of HTTP-related exceptions.
+                pass            
 
         return retval   
         
@@ -124,7 +125,8 @@ class Event(models.Model):
             self.creation_date = timezone.now()
 
         # force signal indexing on parent
-        self.topic.save(force_insert=force_insert, 
+        if config.BUILD_INDEX_ON_SAVED:
+            self.topic.save(force_insert=force_insert, 
                                  force_update=force_update, 
                                  using=using, update_fields=update_fields)        
         

@@ -134,6 +134,9 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.9/topics/i18n/
+LOCALE_PATHS = (
+    os.path.join(BASE_DIR, 'locale'),
+)
 
 LANGUAGES = [
     ('id', _('Indonesia')),
@@ -147,7 +150,7 @@ USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)
@@ -199,6 +202,8 @@ DEBUG_FRONT = (os.environ.get('DJANGO_DEBUG_FRONT')=='True') or False
 CONSTANCE_CONFIG = {
     'DEBUG' : ( DEBUG, "Debug Mode" ),
     'DEBUG_FRONT' : ( DEBUG_FRONT, "Debug Mode for Front End" ),
+    'PING_GOOGLE' : ( False, "Automatically ping google to crawl sitemap whenever content changes" ),
+    'BUILD_INDEX_ON_SAVED' : ( False, "Automatically build search index on 'Event' saved" ),
     'LANGUAGE_CODE' : ( LANGUAGE_CODE, "Language Code" ),
     'META_DESCRIPTION' : ( META_DESCRIPTION, "Meta Description" ),
 }

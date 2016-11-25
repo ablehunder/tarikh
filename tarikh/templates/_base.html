@@ -94,6 +94,7 @@
 		<nav class="navbar navbar-default {%block navbar-class%}navbar-static-top{%endblock%}" role="navigation">
 		  <div class="container">
 		    <div style="position:relative">
+            {% block search-form %}
 		      <form class="search-form pull-right" action="{% url 'haystack_search' %}" role="form">            
 				    <div class="input-group">
 				      <input type="text" name="q" class="form-control" value="{{request.GET.q}}" placeholder="{% trans 'Search' %} ...">
@@ -102,6 +103,7 @@
 				      </span>
 				    </div> 
 		      </form>
+             {% endblock %}
 		  	</div>
 		    <div class="navbar-header">
 		      <a class="navbar-brand" href="/"><img src="{% static 'img/logo.png' %}" class="brand-logo">{{site_name}}</a>
@@ -117,7 +119,7 @@
 			</div>
 			<div class="panel-body">
 			{% blocktrans %}
-			Your browser has javascript disabled or blocked for this site.
+			Your browser has javascript disabled or blocked for this site.<br>
 			Please enable it to get best viewing feature. 
 			{% endblocktrans %}
 			</div>
@@ -143,12 +145,23 @@
 				</div>
 				</a>
 		  	<div class="toolbar-share">
-					<a href="http://www.facebook.com/sharer/sharer.php?u={{request.build_absolute_uri}}" title="Share via Facebook"><i class="fa fa-2x fa-facebook-official"></i></a>
-					<a href="https://twitter.com/intent/tweet?text={% block share-twitter %}{{config.META_DESCRIPTION}}{% endblock %}&url={{request.build_absolute_uri}}" title="Share via Twitter"><i class="fa fa-2x fa-twitter"></i></a>
-					<a href="https://plus.google.com/share?url={{request.build_absolute_uri}}" title="Share via Google+"><i class="fa fa-2x fa-google-plus-official"></i></a>
-					<a href="https://telegram.me/share/url?url={{request.build_absolute_uri}}" title="Share via Telegram"><i class="fa fa-2x fa-telegram"></i></a>
-					<a href="whatsapp://send?text={{config.META_DESCRIPTION}}%20{{request.build_absolute_uri}}" title="Share via WhatsApp"><i class="fa fa-2x fa-whatsapp"></i></a>
-					<a href="http://getpocket.com/save?url={{request.build_absolute_uri}}" title="Add to Pocket"><i class="fa fa-2x fa-get-pocket"></i></a>
+					<a data-toggle="tooltip" data-placement="top" href="http://www.facebook.com/sharer/sharer.php?u={{request.build_absolute_uri}}" title="{% trans 'Share via Facebook' %}"><i class="fa fa-2x fa-facebook-official"></i></a>
+					<a data-toggle="tooltip" data-placement="top" href="https://twitter.com/intent/tweet?text={% block share-twitter %}{{title}}{% endblock %}&url={{request.build_absolute_uri}}" title="{% trans 'Share via Twitter' %}"><i class="fa fa-2x fa-twitter"></i></a>
+					<a data-toggle="tooltip" data-placement="top" href="whatsapp://send?text={{title}}%20{{request.build_absolute_uri}}" title="{% trans 'Share via WhatsApp' %}"><i class="fa fa-2x fa-whatsapp"></i></a>
+					<a data-toggle="tooltip" data-placement="top" href="https://pinterest.com/pin/create/bookmarklet/?url={{request.build_absolute_uri}}&is_video=no&description={{title}}" title="{% trans 'Share via Pinterest' %}"><i class="fa fa-2x fa-pinterest"></i></a>
+					<a data-toggle="tooltip" data-placement="top" href="mailto:?subject={{title}}&body={{meta_description}}%20{{request.build_absolute_uri}}" title="{% trans 'Share via e-mail' %}"><i class="fa fa-2x fa-envelope-o"></i></a>
+          <input type="checkbox" class="hidden" id="share-other" name="share" >
+          <div class="share-other-container">   
+					<a data-toggle="tooltip" data-placement="top" href="http://www.linkedin.com/shareArticle?url={{request.build_absolute_uri}}&title={{title}}" title="{% trans 'Share via LinkedIn' %}"><i class="fa fa-2x fa-linkedin-square"></i></a>
+					<a data-toggle="tooltip" data-placement="top" href="https://plus.google.com/share?url={{request.build_absolute_uri}}" title="{% trans 'Share via Google+' %}"><i class="fa fa-2x fa-google-plus-official"></i></a>
+					<a data-toggle="tooltip" data-placement="top" href="http://www.tumblr.com/share/link?url={{request.build_absolute_uri}}&name={{title}}&description={{meta_description}}" title="{% trans 'Share via Tumblr' %}"><i class="fa fa-2x fa-tumblr"></i></a>
+					<a data-toggle="tooltip" data-placement="top" href="https://telegram.me/share/url?url={{request.build_absolute_uri}}" title="{% trans 'Share via Telegram' %}"><i class="fa fa-2x fa-telegram"></i></a>
+					<a data-toggle="tooltip" data-placement="top" href="http://getpocket.com/save?url={{request.build_absolute_uri}}" title="{% trans 'Add to Pocket' %}"><i class="fa fa-2x fa-get-pocket"></i></a>
+          </div>
+           <label data-toggle="tooltip" data-placement="top" for="share-other" title="{% trans 'Share this..' %}">
+           <i class="fa fa-2x fa-share-alt"></i>
+           <i class="fa fa-2x fa-share-alt fa-spin "></i>
+           </label>
 				</div>
 			</div>
 			</nav>

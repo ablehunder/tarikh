@@ -19,6 +19,7 @@ class BaseView(TemplateView):
     
     def render_to_response(self, context, **response_kwargs):
         default_context = {
+            'title': config.SITE_NAME,
             'meta_description': config.META_DESCRIPTION,
         }
         new_context = {**default_context,  **context}
@@ -131,12 +132,15 @@ class TopicView(ListView):
     def render_to_response(self, context, **response_kwargs):
         obj = Topic.objects.get(slug=self.kwargs['slug'])
         context ['topic'] = obj
+        context ['title'] = obj.title
+        context ['meta_description'] = obj.short_description
         
         if self.mode == 'a': # return ajax/json
             data = serializers.serialize('json', context['object_list'], 
                 fields=( "name", "group", "calendar_type",
-                    "year_start", "month_start", "day_start",
-                    "year_end", "month_end", "day_end",
+                    "year_start", "month_start", "day_start", "time_start",
+                    "year_end", "month_end", "day_end", "time_end",
+                    "media_url", "media_caption", "media_credit"
                 ))
             return HttpResponse(data, content_type='application/json')
         

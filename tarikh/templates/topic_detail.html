@@ -67,7 +67,7 @@
     <div class="topic-info">
     		<div class="topic-thumbnail" >
     		{% if topic.thumbnail_url %}
-    			<img {% if config.DEBUG_FRONT %} src="{% static 'img/logo.png' %}" {% else %} src="{{topic.thumbnail_url}}" {% endif %} class="topic-img" >
+    			<img {% if config.DEBUG_FRONT %} src="{% static 'img/logo.png' %}" {% else %} src="{{topic.thumbnail_url}}" title="{{topic.thumbnail_credit}}" {% endif %} class="topic-img" >
     		{% else %}
     		<img src="{% static 'img/logo.png' %}" class="topic-img" >
         {% endif %}
@@ -87,49 +87,49 @@
     <div class="container">        
     	<div class="btn-mode-wrap hidden">
 				<label for="tbtn-mode">
-			  <i class="fa fa-fw fa-desktop fa-lg" data-toggle="tooltip" data-placement="top" title="{% trans 'Desktop/Tablet Mode - Horizontal Timeline' %}"></i>
-			  <i class="fa fa-fw fa-tablet fa-lg" data-toggle="tooltip" data-placement="top" title="{% trans 'Mobile Mode - Vertical Timeline' %}"></i>
+			  <i class="fa fa-fw fa-desktop fa-lg" data-toggle="tooltip" data-placement="bottom" title="{% trans 'Desktop/Tablet Mode - Horizontal Timeline' %}"></i>
+			  <i class="fa fa-fw fa-tablet fa-lg" data-toggle="tooltip" data-placement="bottom" title="{% trans 'Mobile Mode - Vertical Timeline' %}"></i>
 			  </label>
 	
 		  	<input id="tbtn-sort" type="checkbox" name="sort" checked disabled value="asc" class="hidden" autocomplete="off"> 
 				<label for="tbtn-sort">
-			  <i class="fa fa-fw fa-sort-numeric-asc fa-lg" data-toggle="tooltip" data-placement="top" title="{% trans 'Sort Date Ascending' %}"></i>
-			  <i class="fa fa-fw fa-sort-numeric-desc fa-lg" data-toggle="tooltip" data-placement="top" title="{% trans 'Sort Date Descending' %}"></i>
+			  <i class="fa fa-fw fa-sort-numeric-asc fa-lg" data-toggle="tooltip" data-placement="bottom" title="{% trans 'Sort Date Ascending' %}"></i>
+			  <i class="fa fa-fw fa-sort-numeric-desc fa-lg" data-toggle="tooltip" data-placement="bottom" title="{% trans 'Sort Date Descending' %}"></i>
 			  </label>
 	
 				<label for="tbtn-cal">
-			  <i class="fa fa-fw fa-sun-o fa-lg" data-toggle="tooltip" data-placement="top" title="{% trans 'Gregorian' %}"></i>
-			  <i class="fa fa-fw fa-moon-o fa-lg" data-toggle="tooltip" data-placement="top" title="{% trans 'Hijri' %}"></i>
+			  <i class="fa fa-fw fa-sun-o fa-lg" data-toggle="tooltip" data-placement="bottom" title="{% trans 'Gregorian' %}"></i>
+			  <i class="fa fa-fw fa-moon-o fa-lg" data-toggle="tooltip" data-placement="bottom" title="{% trans 'Hijri' %}"></i>
 			  </label>
 				<label for="tbtn-font">
-			  <i class="fa fa-fw fa-font fa-1x" data-toggle="tooltip" data-placement="top" title="{% trans 'Small Font' %}"></i>
-			  <i class="fa fa-fw fa-font fa-lg" data-toggle="tooltip" data-placement="top" title="{% trans 'Large Font' %}"></i>
+			  <i class="fa fa-fw fa-font fa-1x" data-toggle="tooltip" data-placement="bottom" title="{% trans 'Small Font' %}"></i>
+			  <i class="fa fa-fw fa-font fa-lg" data-toggle="tooltip" data-placement="bottom" title="{% trans 'Large Font' %}"></i>
 			  </label>
 			</div>
 			
     	<div class="btn-group btn-mode-wrap" data-toggle="buttons">
-			  <a class="btn btn-default {% if not request.GET.o or request.GET.o == 'year_start' %}active{% endif %}" data-toggle="tooltip" data-placement="top" title="{% trans 'Sort Date Ascending' %}"
+			  <a class="btn btn-default {% if not request.GET.o or request.GET.o == 'year_start' %}active{% endif %}" data-toggle="tooltip" data-placement="bottom" title="{% trans 'Sort Date Ascending' %}"
 					href="?o=year_start{% for key, value in request.GET.items %}{% if key != 'o' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">
 					<i class="fa fa-fw fa-sort-numeric-asc fa-lg"></i>
 				</a>
-			  <a class="btn btn-default {% if request.GET.o == '-year_start' %}active{% endif %}" data-toggle="tooltip" data-placement="top" title="{% trans 'Sort Date Descending' %}"
+			  <a class="btn btn-default {% if request.GET.o == '-year_start' %}active{% endif %}" data-toggle="tooltip" data-placement="bottom" title="{% trans 'Sort Date Descending' %}"
 					href="?o=-year_start{% for key, value in request.GET.items %}{% if key != 'o' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">
 					<i class="fa fa-fw fa-sort-numeric-desc fa-lg"></i>
 				</a>
 			</div>
 			<!--
     	<div class="btn-group btn-mode-wrap hidden" data-toggle="buttons">
-			  <label class="btn btn-default" data-toggle="tooltip" data-placement="top" title="{% trans 'Hijri' %}">
+			  <label class="btn btn-default" data-toggle="tooltip" data-placement="bottom" title="{% trans 'Hijri' %}">
 			    <input type="radio" name="calendar" value="hijri" autocomplete="off"> <i class="fa fa-fw fa-moon-o fa-lg"></i>
 			  </label>
-			  <label class="btn btn-default active" data-toggle="tooltip" data-placement="top" title="{% trans 'Gregorian' %}">
+			  <label class="btn btn-default active" data-toggle="tooltip" data-placement="bottom" title="{% trans 'Gregorian' %}">
 			    <input type="radio" name="calendar" value="gregorian" autocomplete="off" checked> <i class="fa fa-fw fa-sun-o fa-lg"></i>
 			  </label>
 			</div>
 			-->
 			<!--
     	<div class="btn-group" data-toggle="buttons">
-			  <label for="input2" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="{% trans 'Font Size' %}">
+			  <label for="input2" class="btn btn-default" data-toggle="tooltip" data-placement="bottom" title="{% trans 'Font Size' %}">
 			    <input type="checkbox" name="font-size" value="bigger" autocomplete="off">
 			    <i class="fa fa-fw fa-text-height fa-lg"></i>
 			  </label>
@@ -180,12 +180,16 @@
         <div class="event-rm-wrap rm-wrap">
         	<label for="event-rm-wrap-{{e.pk}}" class="rm-trigger rm-target">
 		        <time class="event-start-time">{{e.year_start|default_if_none:''}}
-							{% if e.month_start %}- {{e.month_start|default_if_none:''}}
-							{% if e.day_start %}- {{e.day_start|default_if_none:''}}{% endif %}{% endif %}
+							{% if e.month_start %}-{{e.month_start|default_if_none:''}}
+							{% if e.day_start %}-{{e.day_start|default_if_none:''}}
+              <sup>{% if e.time_start %} {{e.time_start|default_if_none:''}}{% endif %}</sup>
+              {% endif %}{% endif %}
 						</time>
 						<time class="event-end-time">{% if e.year_end %} &#x2014; {% endif %}{{e.year_end|default_if_none:''}}
-							{% if e.month_end %}- {{e.month_end|default_if_none:''}}
-							{% if e.day_end %}- {{e.day_end|default_if_none:''}}{% endif %}{% endif %}
+							{% if e.month_end %}-{{e.month_end|default_if_none:''}}
+							{% if e.day_end %}-{{e.day_end|default_if_none:''}}
+              <sup>{% if e.time_end %} {{e.time_end|default_if_none:''}}{% endif %}</sup>
+              {% endif %}{% endif %}
 						</time>
 		        <cite class="event-title">{{e.name|default_if_none:''}}</cite>
 		        <dl class="event-desc">{{e.description|default_if_none:''|safe}}
@@ -202,6 +206,11 @@
 		        <dl>
 							<a href="{{request.build_absolute_uri}}" class="event-link">{{e.pk}}</a>
 		        </dl>
+        		<div class="event-thumbnail {% if not e.media_url %}hidden{% endif %}" >
+        			<img {% if config.DEBUG_FRONT %} src="{% static 'img/logo.png' %}" {% else %} src="{{e.media_url}}" title="{{topic.media_credit}}" {% endif %} class="event-img" >
+              <div class="tl-credit" style="text-align:left">{{topic.media_credit}}</div>        		
+              <div class="tl-caption">{{topic.media_caption}}</div>
+            </div>                    
 		      </label>
         </div>
   			<label for="event-rm-wrap-{{e.pk}}" class="event-rm-trigger rm-shade rm-trigger">

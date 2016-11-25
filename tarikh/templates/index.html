@@ -7,14 +7,20 @@
 {% block doc-title %}
 {%if request.GET.q %}{% trans 'Search' %}: {{request.GET.q}} | {% endif %}{{ block.super }} 
 {% endblock %}
-
+{% block search-form %}{% if not request.GET.q %}{{block.super}}{% endif %}{% endblock %}
 {% block content %}
 	{%if request.GET.q %}
-	<div class="panel panel-default search-info">
-		<div class="panel-body">
-		<h5>{% trans 'Search Result'%}:</h5><p><i>{{request.GET.q}}</i></p>
-		<!--{% if suggestion %}<p>{% trans 'Suggestion'%}: <i>{{suggestion}}</i></p>{% endif %}-->
-		</div>
+	<div class=" ">
+		<h5>{% trans 'Search'%}:</h5>
+      <form class="" action="{% url 'haystack_search' %}" role="form">            
+		    <div class="input-group">
+		      <input type="text" name="q" class="form-control" value="{{request.GET.q}}" placeholder="{% trans 'Search' %} ...">
+		      <span class="input-group-btn">
+		        <button class="btn btn-default" type="submit"><i class="fa fa-search fa-lg"></i></button>
+		      </span>
+		    </div> 
+      </form>
+		<!--{% if suggestion %}<p>{% trans 'Suggestion'%}: <i>{{suggestion}}</i></p>{% endif %}--> 
 	</div>
 	{%endif%}
 	<div class="topic-list">
@@ -55,7 +61,7 @@
   	</div>
   	<div class="divider"></div>
 	{% empty %}
-		<p>No results found.</p>
+		<p>{% trans 'No result found' %}</p>
   {% endfor %}
   </div>
 	{% if is_paginated %}

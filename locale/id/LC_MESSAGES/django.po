@@ -1,0 +1,225 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-11-25 19:29+0700\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: .\tarikh\models.py:18
+msgid "Title"
+msgstr "Judul"
+
+#: .\tarikh\models.py:19
+msgid "Slug"
+msgstr "Slug"
+
+#: .\tarikh\models.py:20
+msgid "Short Description"
+msgstr "Deskripsi Singkat"
+
+#: .\tarikh\models.py:21 .\tarikh\models.py:82
+msgid "Description"
+msgstr "Deskripsi"
+
+#: .\tarikh\models.py:22 .\tarikh\models.py:83
+msgid "Footnote"
+msgstr "Catatan Kaki"
+
+#: .\tarikh\models.py:23
+msgid "Thumbnail URL"
+msgstr "URL Thumbnail"
+
+#: .\tarikh\models.py:24
+msgid "Thumbnail Credit"
+msgstr "Kredit Thumbnail"
+
+#: .\tarikh\models.py:25
+msgid "Scales"
+msgstr "Skala"
+
+#: .\tarikh\models.py:25
+msgid "Human"
+msgstr "Human"
+
+#: .\tarikh\models.py:25
+msgid "Cosmological"
+msgstr "Cosmological"
+
+#: .\tarikh\models.py:26 .\tarikh\models.py:89
+msgid "Tags"
+msgstr "Tags"
+
+#: .\tarikh\models.py:27 .\tarikh\models.py:90
+msgid "Authors"
+msgstr "Pengarang"
+
+#: .\tarikh\models.py:34
+msgid "JSON Attributes"
+msgstr "Atribut JSON"
+
+#: .\tarikh\models.py:80
+msgid "Name"
+msgstr "Nama"
+
+#: .\tarikh\models.py:84
+msgid "Visible"
+msgstr "Terlihat"
+
+#: .\tarikh\models.py:85
+msgid "Event Group"
+msgstr "Grup kejadian"
+
+#: .\tarikh\models.py:86
+msgid "Media URL"
+msgstr "URL Media"
+
+#: .\tarikh\models.py:87
+msgid "Media Caption"
+msgstr "Judul Media"
+
+#: .\tarikh\models.py:88
+msgid "Media Credit"
+msgstr "Kredit Media"
+
+#: .\tarikh\models.py:94 .\tarikh\templates\topic_detail.html.py:102
+#: .\tarikh\templates\topic_detail.html:122
+msgid "Hijri"
+msgstr "Hijriyah"
+
+#: .\tarikh\models.py:94 .\tarikh\templates\topic_detail.html.py:101
+#: .\tarikh\templates\topic_detail.html:125
+msgid "Gregorian"
+msgstr "Masehi"
+
+#: .\tarikh\settings.py:142
+msgid "Indonesia"
+msgstr "Indonesia"
+
+#: .\tarikh\templates\_base.html:101 .\tarikh\templates\index.html.py:8
+#: .\tarikh\templates\index.html:14 .\tarikh\templates\index.html.py:17
+msgid "Search"
+msgstr "Cari"
+
+#: .\tarikh\templates\_base.html:119
+msgid "No Script"
+msgstr "Script tidak aktif"
+
+#: .\tarikh\templates\_base.html:122
+msgid ""
+"\n"
+"\t\t\tYour browser has javascript disabled or blocked for this site.<br>\n"
+"\t\t\tPlease enable it to get best viewing feature. \n"
+"\t\t\t"
+msgstr ""
+"\n"
+"\t\t\tPeramban anda menonaktifkan / memblokir javascript untuk situs ini."
+"<br>\n"
+"\t\t\tMohon aktifkan untuk mendapatkan fitur yang terbaik. \n"
+"\t\t\t"
+
+#: .\tarikh\templates\_base.html:149
+msgid "Share via Facebook"
+msgstr "Bagikan melalui Facebook"
+
+#: .\tarikh\templates\_base.html:150
+msgid "Share via Twitter"
+msgstr "Bagikan melalui Twitter"
+
+#: .\tarikh\templates\_base.html:151
+msgid "Share via WhatsApp"
+msgstr "Bagikan melalui WhatsApp"
+
+#: .\tarikh\templates\_base.html:152
+msgid "Share via Pinterest"
+msgstr "Bagikan melalui Pinterest"
+
+#: .\tarikh\templates\_base.html:153
+msgid "Share via e-mail"
+msgstr "Bagikan melalui e-mail"
+
+#: .\tarikh\templates\_base.html:156
+msgid "Share via LinkedIn"
+msgstr "Bagikan melalui LinkedIn"
+
+#: .\tarikh\templates\_base.html:157
+msgid "Share via Google+"
+msgstr "Bagikan melalui Google+"
+
+#: .\tarikh\templates\_base.html:158
+msgid "Share via Tumblr"
+msgstr "Bagikan melalui Tumblr"
+
+#: .\tarikh\templates\_base.html:159
+msgid "Share via Telegram"
+msgstr "Bagikan melalui Telegram"
+
+#: .\tarikh\templates\_base.html:160
+msgid "Add to Pocket"
+msgstr "Tambahkan ke Pocket"
+
+#: .\tarikh\templates\_base.html:162
+msgid "Share this.."
+msgstr "Bagikan ini.."
+
+#: .\tarikh\templates\index.html:23
+msgid "Suggestion"
+msgstr "Saran"
+
+#: .\tarikh\templates\index.html:64
+msgid "No result found"
+msgstr "Tidak ditemukan"
+
+#: .\tarikh\templates\topic_detail.html:90
+msgid "Desktop/Tablet Mode - Horizontal Timeline"
+msgstr "Mode Desktop/Tablet - Lini Masa Horisontal"
+
+#: .\tarikh\templates\topic_detail.html:91
+msgid "Mobile Mode - Vertical Timeline"
+msgstr "Mode Mobile - Lini Masa Vertikal"
+
+#: .\tarikh\templates\topic_detail.html:96
+#: .\tarikh\templates\topic_detail.html:111
+msgid "Sort Date Ascending"
+msgstr "Urut Tanggal Lampau - Terkini"
+
+#: .\tarikh\templates\topic_detail.html:97
+#: .\tarikh\templates\topic_detail.html:115
+msgid "Sort Date Descending"
+msgstr "Urut Tanggal Terkini - Lampau"
+
+#: .\tarikh\templates\topic_detail.html:105
+msgid "Small Font"
+msgstr "Font Kecil"
+
+#: .\tarikh\templates\topic_detail.html:106
+msgid "Large Font"
+msgstr "Font Besar"
+
+#: .\tarikh\templates\topic_detail.html:132
+msgid "Font Size"
+msgstr "Ukuran Font"
+
+#: .\tarikh\templates\topic_detail.html:153
+msgid "More"
+msgstr "Lebih"
+
+#: .\tarikh\templates\topic_detail.html:154
+msgid "Less"
+msgstr "Kurang"
+
+#: .\tarikh\templates\topic_detail.html:177
+msgid "Click for detail"
+msgstr "Klik untuk melihat detil"
