@@ -51,7 +51,7 @@
 		<meta property="og:type" content="{% block og-type %}website{% endblock %}"> 
 		<meta property="og:url" content="{% block og-url %}{{request.build_absolute_uri}}{% endblock %}"> 
 		<meta property="og:title" content="{% block og-title %}{{site_name}}{% endblock %}"> 
-		<meta property="og:image" content="{% block og-image %}http://{{request.META.HTTP_HOST}}{% static 'img/logo.png' %}{% endblock %}"> 
+		<meta property="og:image" content="{% block og-image %}http://{{request.META.HTTP_HOST}}{% static 'img/logo.jpg' %}{% endblock %}"> 
 		<meta property="og:description" content="{% block og-description %}{{config.META_DESCRIPTION}}{% endblock %}">
 {% endblock %}
 {% block meta-twitter %}
@@ -60,7 +60,7 @@
 		<meta name="twitter:creator" content="@ablehunder">
 		<meta name="twitter:title" content="{% block tw-title %}{{site_name}}{% endblock %}">
 		<meta name="twitter:description" content="{% block tw-description %}{{config.META_DESCRIPTION}}{% endblock %}">
-		<meta name="twitter:image" content="{% block tw-image %}http://{{request.META.HTTP_HOST}}{% static 'img/logo.png' %}{% endblock %}">
+		<meta name="twitter:image" content="{% block tw-image %}http://{{request.META.HTTP_HOST}}{% static 'img/logo.jpg' %}{% endblock %}">
 {% endblock %}
 
 {% block styles %}
