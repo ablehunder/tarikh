@@ -31,9 +31,9 @@
   	<a href="{% url 'topic' o.slug %}">
       		<div class="topic-thumbnail" >
       		{% if o.thumbnail_url %}
-      			<img {% if config.DEBUG_FRONT %} src="{% static 'img/logo.png' %}" {% else %} src="{{o.thumbnail_url}}" {% endif %} class="topic-img" >
+      			<img {% if config.DEBUG_FRONT %} src="{% static 'img/logo.jpg' %}" {% else %} src="{{o.thumbnail_url}}" {% endif %} class="topic-img" >
       		{% else %}
-      			<img src="{% static 'img/logo.png' %}" class="topic-img" >
+      			<img src="{% static 'img/logo.jpg' %}" class="topic-img" >
           {% endif %}
       		</div>
       		<div class="topic-text">
