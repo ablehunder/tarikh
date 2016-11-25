@@ -14,6 +14,7 @@ from django.db.models import Q
 from haystack import views
 from datetime import datetime
 from constance import config
+from django.contrib.sites.shortcuts import get_current_site
 
 class BaseView(TemplateView):
     
@@ -35,6 +36,7 @@ class HomeView(ListView):
     type = None
     mode = None
     lang = settings.LANGUAGE_CODE    
+    site = None
     
     def query_using_db(self):
         qfilter = None
@@ -52,6 +54,7 @@ class HomeView(ListView):
     
     def dispatch(self, request, *args, **kwargs):
         try:
+            self.site = get_current_site(request)
             self.query = request.GET.get("q")
             self.type = request.GET.get("c")
             self.mode = request.GET.get('m')
@@ -65,6 +68,7 @@ class HomeView(ListView):
     def render_to_response(self, context, **response_kwargs):
         
         default_context = {
+            'title': self.site.name + ' - ' + config.META_DESCRIPTION,
             'meta_description': config.META_DESCRIPTION,
         }
         new_context = {**default_context,  **context}
@@ -155,7 +159,7 @@ class EventView(DetailView):
         return Event.objects.filter(
                pk=self.kwargs['pk'], 
                topic__slug = self.kwargs['slug']
-            ).order_by('-year_start', '-month_start', '-day_start', '-time_start')				
+            )
     
     def dispatch(self, request, *args, **kwargs):
         try:
