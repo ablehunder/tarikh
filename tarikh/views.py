@@ -116,7 +116,7 @@ class TopicView(ListView):
         return Event.objects.filter(
                 topic__slug = self.kwargs['slug'],
                 visible = True
-            ).order_by(self.ordering if self.ordering else 'year_start')	
+            ).order_by('-year_start', '-month_start', '-day_start', '-time_start')	
 
     def dispatch(self, request, *args, **kwargs):
         try:
@@ -152,7 +152,10 @@ class EventView(DetailView):
     mode = None
     
     def get_queryset(self):
-        return Event.objects.filter(pk=self.kwargs['pk'], topic__slug = self.kwargs['slug'])				
+        return Event.objects.filter(
+               pk=self.kwargs['pk'], 
+               topic__slug = self.kwargs['slug']
+            ).order_by('-year_start', '-month_start', '-day_start', '-time_start')				
     
     def dispatch(self, request, *args, **kwargs):
         try:

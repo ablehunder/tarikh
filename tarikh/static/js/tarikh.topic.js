@@ -125,7 +125,7 @@ $(function () {
              ev['end_date']['minute'] = te[1];
              ev['end_date']['second'] = te[2];
           }   
-          console.log(ev,ts,f.time_end);
+          //console.log(ev,ts,f.time_end);
           return ev;
         };
 			$.each(evData, function(k,v){
@@ -148,18 +148,20 @@ $(function () {
 				var sid = evt.target._getSlideIndex(evt.unique_id), 
 					cs = evt.target.getCurrentSlide();
 				if (sid==0 || evt.unique_id == null) return;				
-				if (evData[sid-1]._fetch && evData[sid-1]._placed) return;
-				if (evData[sid-1]._fetch) {
+        var evd = $.grep(evData, 
+              function(e){ return e.pk == evt.unique_id.substr(1); })[0];
+				if (evd._fetch && evd._placed) return;
+				if (evd._fetch) {
 					$(cs._el.content).find('.tl-text-content')
-						.html(setText(evData[sid-1]));
-					evData[sid-1]._placed = true;
+						.html(setText(evd));
+					evd._placed = true;
 				}
 				else
 					$.getJSON(location.origin + location.pathname 
-						+ evData[sid-1].pk + '/?m=a',function(data){
-						evData[sid-1] = data[0];
-						evData[sid-1]._placed = evData[sid-1]._fetch = true;
-						$(cs._el.content).find('.tl-text-content').html(setText(data[0]));                          
+						+ evd.pk + '/?m=a',function(data){
+						$.extend(evd, data[0]);
+						evd._placed = evd._fetch = true;
+						$(cs._el.content).find('.tl-text-content').html(setText(evd));                          
 					});      	
 			});
 			if (tophash && evData[0].pk == tophash.substr(1)) tophash=null;
